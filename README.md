@@ -45,7 +45,7 @@ expanding schedule (1, 3, 7, 16, 35 days) until you've mastered it. Fifteen minu
    Chrome/Edge/Brave and point it at your folder — no download, no account. Or open
    `hub/index.html` locally for a fully-offline copy.
 
-## Privacy model (read this once)
+## Privacy model
 
 The hub is a **static page with zero backend**. It makes no network calls; your decks,
 answers, and profile are read and written through your browser's local folder permission and
