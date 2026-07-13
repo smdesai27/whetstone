@@ -5,252 +5,420 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Whetstone</title>
 <style>
-  :root { color-scheme: light; --accent:#0f766e; --accent-soft:#e6f4f2; --ink:#1c1c28; --muted:#6b6b7b; --bg:#fafafc; --card:#fff; --line:#e6e6ef; --pass:#1a9e5c; --partial:#d99000; --fail:#d64545; }
+  :root, [data-theme="light"] {
+    --bg:#F5F1E8; --panel:#EDE7DA; --card:#FDFBF6; --line:#DAD3C4;
+    --ink:#2B2A26; --muted:#8A857A; --accent:#B23A2E; --accent-fg:#F5F1E8;
+    --pass:#5F7A5A; --pass-bg:#EEF0E6; --partial:#A8792F; --input:#FDFBF6;
+  }
+  [data-theme="dark"] {
+    --bg:#1E1D1A; --panel:#262521; --card:#262521; --line:#3A3833;
+    --ink:#E8E3D8; --muted:#8F8A7E; --accent:#C4523F; --accent-fg:#F5F1E8;
+    --pass:#7E9878; --pass-bg:#252B22; --partial:#C99A4B; --input:#2A2925;
+  }
   * { box-sizing:border-box; margin:0; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); padding:24px; line-height:1.5; max-width:720px; margin:0 auto; }
-  h1 { font-size:22px; letter-spacing:-0.3px; }
-  h2 { font-size:13px; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin:22px 0 10px; }
-  .sub { color:var(--muted); font-size:13px; margin-top:2px; }
-  .stats { display:flex; gap:10px; margin-top:14px; }
-  .stat { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:10px 14px; flex:1; }
-  .stat b { font-size:22px; display:block; } .stat span { font-size:12px; color:var(--muted); }
-  .deck { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:12px; cursor:pointer; }
-  .deck.sel { border-color:var(--accent); background:var(--accent-soft); }
-  .deck .t { font-weight:600; font-size:14px; } .deck .m { font-size:12px; color:var(--muted); }
-  .duepill { margin-left:auto; background:var(--accent); color:#fff; border-radius:20px; font-size:12px; padding:2px 10px; font-weight:600; }
-  .duepill.zero { background:#d9d9e3; color:#555; }
-  button { font-family:inherit; border:none; border-radius:8px; padding:10px 16px; font-size:14px; font-weight:600; cursor:pointer; }
-  .primary { background:var(--accent); color:#fff; } .primary:disabled { background:#b8d8d4; cursor:default; }
-  .ghost { background:transparent; color:var(--muted); border:1px solid var(--line); }
-  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:14px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px; margin-top:14px; }
-  .qmeta { font-size:12px; color:var(--muted); margin-bottom:8px; display:flex; justify-content:space-between; }
-  .prompt { font-size:16px; font-weight:600; margin-bottom:14px; white-space:pre-wrap; }
-  textarea { width:100%; min-height:90px; border:1px solid var(--line); border-radius:8px; padding:10px; font:inherit; font-size:14px; resize:vertical; }
-  .opt { display:block; width:100%; text-align:left; background:var(--bg); border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:6px; font-weight:500; }
-  .opt:hover { border-color:var(--accent); }
-  .opt.right { border-color:var(--pass); background:#e8f8ef; } .opt.wrong { border-color:var(--fail); background:#fdeeee; } .opt.reveal { border-color:var(--pass); }
-  .answerbox { background:var(--accent-soft); border-radius:8px; padding:12px; font-size:14px; margin-top:12px; }
-  .answerbox b { color:var(--accent); font-size:12px; text-transform:uppercase; letter-spacing:1px; display:block; margin-bottom:4px; }
-  .feedback { border-left:3px solid var(--accent); padding:8px 12px; margin-top:10px; font-size:14px; background:var(--card); }
-  .g-pass { color:var(--pass); font-weight:700; } .g-partial { color:var(--partial); font-weight:700; } .g-fail { color:var(--fail); font-weight:700; }
-  .gbtn.pass { background:#e8f8ef; color:var(--pass);} .gbtn.partial { background:#fdf5e3; color:var(--partial);} .gbtn.fail { background:#fdeeee; color:var(--fail);}
-  .timerbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; font-size:13px; color:var(--muted); }
-  #timer.warn { color:var(--fail); font-weight:700; }
+  html, body { height:100%; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); font-size:14px; line-height:1.5; }
+  .serif { font-family:'Hiragino Mincho ProN','Yu Mincho',Georgia,serif; }
+  .label { font-size:11px; color:var(--muted); letter-spacing:2px; }
+  button { font-family:inherit; font-size:13px; border-radius:2px; padding:9px 20px; cursor:pointer; letter-spacing:1px; border:1px solid var(--line); background:transparent; color:var(--ink); }
+  button.primary { background:var(--accent); color:var(--accent-fg); border:none; padding:11px 28px; font-size:14px; letter-spacing:2px; }
+  button.ink { background:var(--ink); color:var(--bg); border:none; }
+  button.quiet { color:var(--muted); }
+  button.danger { color:var(--accent); border-color:var(--accent); }
+  .app { display:flex; min-height:100vh; }
+  .side { width:216px; background:var(--panel); border-right:1px solid var(--line); padding:24px 0; display:flex; flex-direction:column; flex-shrink:0; }
+  .side .brand { padding:0 20px 16px; border-bottom:1px solid var(--line); font-size:17px; letter-spacing:2px; }
+  .nav-h { padding:18px 12px 6px; }
+  .nav { margin:0 10px; padding:9px 12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; border-left:2px solid transparent; gap:8px; }
+  .nav:hover { background:var(--bg); }
+  .nav.on { background:var(--bg); border-left-color:var(--accent); }
+  .nav .n { font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .nav.hasdue .n { color:var(--ink); }
+  .nav .c { font-size:11px; color:var(--muted); white-space:nowrap; }
+  .nav .c.due { color:var(--accent); }
+  .pill { font-size:12px; color:var(--accent-fg); background:var(--accent); border-radius:10px; padding:1px 8px; }
+  .foot { margin-top:auto; padding:14px 20px 0; border-top:1px solid var(--line); font-size:11px; color:var(--muted); }
+  .foot .gear { cursor:pointer; margin-top:8px; display:inline-block; }
+  .foot .gear:hover { color:var(--ink); }
+  .main { flex:1; padding:44px 48px; display:flex; flex-direction:column; max-width:760px; }
+  .stat b { display:block; font-family:Georgia,serif; font-size:24px; font-weight:400; }
+  .stat span { font-size:11px; color:var(--muted); letter-spacing:1px; }
+  .qcard { margin-top:8px; }
+  .qtop { display:flex; justify-content:space-between; }
+  .strokes { display:flex; gap:5px; margin-top:10px; }
+  .strokes span { width:22px; height:2px; background:var(--line); }
+  .strokes span.done { background:var(--accent); }
+  .prompt { font-size:18px; margin-top:26px; line-height:1.6; white-space:pre-wrap; }
+  textarea { width:100%; min-height:96px; background:var(--input); border:1px solid var(--line); border-radius:2px; margin-top:22px; padding:12px 14px; font:inherit; font-size:13px; color:var(--ink); resize:vertical; }
+  textarea::placeholder { color:var(--muted); }
+  .opt { display:block; width:100%; text-align:left; border:1px solid var(--line); border-radius:2px; padding:11px 14px; margin-top:8px; font-size:13px; color:var(--ink); background:transparent; letter-spacing:0; }
+  .opt:hover { border-color:var(--muted); }
+  .opt.right { border-color:var(--pass); background:var(--pass-bg); }
+  .opt.wrong { border-color:var(--accent); }
+  .result { border-left:2px solid var(--pass); background:var(--input); margin-top:18px; padding:12px 16px; }
+  .result.fail { border-left-color:var(--accent); }
+  .result.partial { border-left-color:var(--partial); }
+  .result .r-label { font-size:11px; letter-spacing:2px; }
+  .result .r-body { font-size:13px; margin-top:6px; line-height:1.6; }
+  .answer { background:var(--input); border:1px solid var(--line); border-radius:2px; margin-top:18px; padding:12px 16px; font-size:13px; line-height:1.6; }
+  .answer .label { display:block; margin-bottom:4px; }
+  .row { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; align-items:center; }
+  .set-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; gap:12px; }
+  .seg { display:inline-flex; border:1px solid var(--line); border-radius:2px; overflow:hidden; }
+  .seg span { padding:6px 14px; font-size:12px; color:var(--muted); cursor:pointer; }
+  .seg span.on { color:var(--bg); background:var(--ink); }
+  .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:20px; }
   .hidden { display:none !important; }
-  .spin, .err { font-size:13px; margin-top:8px; } .err { color:var(--fail); }
-  .summary li { margin-bottom:4px; font-size:14px; }
-  .hero { text-align:center; padding:60px 20px; }
-  .hero p { color:var(--muted); margin:10px 0 20px; }
+  .err { color:var(--accent); font-size:13px; margin-top:10px; }
+  .hint { font-size:12px; color:var(--muted); }
+  ul.done-list { list-style:none; margin-top:14px; }
+  ul.done-list li { font-size:13px; padding:4px 0; color:var(--muted); }
+  ul.done-list li b { font-weight:500; letter-spacing:1px; }
+  .g-pass { color:var(--pass); } .g-partial { color:var(--partial); } .g-fail { color:var(--accent); } .g-queued { color:var(--muted); }
 </style>
 </head>
 <body>
 
 <div id="view-pick" class="hero">
-  <h1>🪨 Whetstone</h1>
-  <p>Point me at your whetstone folder (the one containing <code>decks/</code> and <code>PENDING.md</code>).<br>Everything stays on your machine — this page makes no network calls.</p>
+  <div class="serif" style="font-size:26px;letter-spacing:3px">Whetstone</div>
+  <p class="hint" style="max-width:380px;margin:14px 0 24px">Point this page at your whetstone folder. Everything runs in your browser — your files never leave your computer.</p>
   <button class="primary" id="btn-pick">Open whetstone folder</button>
   <div class="err" id="pick-err"></div>
 </div>
 
-<div id="view-home" class="hidden">
-  <h1>Whetstone</h1>
-  <div class="sub" id="today-label"></div>
-  <div class="stats">
-    <div class="stat"><b id="st-due">–</b><span>due today</span></div>
-    <div class="stat"><b id="st-active">–</b><span>active items</span></div>
-    <div class="stat"><b id="st-retired">–</b><span>mastered</span></div>
-    <div class="stat"><b id="st-pending">–</b><span>awaiting grading</span></div>
+<div id="view-app" class="app hidden">
+  <div class="side">
+    <div class="brand serif">Whetstone</div>
+    <div class="nav-h label">TODAY</div>
+    <div class="nav" id="nav-today" onclick="setScope(-1)">
+      <span class="n" style="color:var(--ink)">Due</span><span class="pill" id="side-due">0</span>
+    </div>
+    <div class="nav-h label">DECKS</div>
+    <div id="side-decks"></div>
+    <div class="foot">
+      <div id="foot-stats">–</div>
+      <span class="gear" onclick="showSettings()">Settings</span>
+    </div>
   </div>
-  <h2>Decks</h2>
-  <div id="deck-list"></div>
-  <div class="row">
-    <button class="primary" id="btn-start" disabled>Start session</button>
-    <label class="sub" style="cursor:pointer"><input type="checkbox" id="chk-notdue"> include not-yet-due</label>
-  </div>
-  <div class="sub" style="margin-top:16px">MCQ &amp; self-graded answers apply instantly. Teach-back answers queue in PENDING.md — run <b>/whetstone</b> in your agent to grade them (no API costs).</div>
-  <div class="err" id="home-err"></div>
-</div>
 
-<div id="view-session" class="hidden">
-  <div class="timerbar"><span id="progress"></span><span id="timer">15:00</span></div>
-  <div class="card">
-    <div class="qmeta"><span id="q-deck"></span><span id="q-stage"></span></div>
-    <div class="prompt" id="q-prompt"></div>
-    <div id="q-input"></div>
-    <div id="q-result"></div>
-    <div class="row" id="q-actions"></div>
-  </div>
-</div>
+  <div class="main">
+    <div id="pane-home">
+      <div class="label" id="home-date"></div>
+      <div class="serif" style="font-size:26px;margin-top:10px" id="home-title"></div>
+      <div class="hint" id="home-sub" style="margin-top:6px"></div>
+      <div style="display:flex;gap:28px;margin-top:26px">
+        <div class="stat"><b style="color:var(--accent)" id="st-due">0</b><span>due</span></div>
+        <div class="stat"><b id="st-active">0</b><span>active</span></div>
+        <div class="stat"><b id="st-retired">0</b><span>mastered</span></div>
+        <div class="stat"><b id="st-queued">0</b><span>awaiting grading</span></div>
+      </div>
+      <div class="row" style="margin-top:40px">
+        <button class="primary" id="btn-begin">Begin</button>
+        <span class="hint" id="begin-hint">15 min session</span>
+      </div>
+      <div class="hint" style="margin-top:26px">Add material: tell your agent “/whetstone &lt;link&gt;”. Queued answers are graded free on your next /whetstone.</div>
+      <div class="err" id="home-err"></div>
+    </div>
 
-<div id="view-done" class="hidden">
-  <h1>Session complete</h1>
-  <div class="card">
-    <div id="done-score" style="font-size:18px;font-weight:700;margin-bottom:10px"></div>
-    <ul class="summary" id="done-list"></ul>
-    <div class="sub" id="save-status" style="margin-top:12px"></div>
+    <div id="pane-session" class="hidden">
+      <div class="qtop"><span class="label" id="q-meta"></span><span class="label" id="q-timer" style="color:var(--accent)"></span></div>
+      <div class="strokes" id="q-strokes"></div>
+      <div class="qcard">
+        <div class="prompt serif" id="q-prompt"></div>
+        <div id="q-input"></div>
+        <div id="q-result"></div>
+        <div class="row" id="q-actions"></div>
+      </div>
+    </div>
+
+    <div id="pane-done" class="hidden">
+      <div class="label">SESSION COMPLETE</div>
+      <div class="serif" style="font-size:24px;margin-top:10px" id="done-score"></div>
+      <ul class="done-list" id="done-list"></ul>
+      <div class="hint" id="save-status" style="margin-top:14px"></div>
+      <div class="row" style="margin-top:26px"><button class="ink" onclick="goHome()">Back</button></div>
+    </div>
+
+    <div id="pane-settings" class="hidden">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px">
+        <span class="serif" style="font-size:19px">Settings</span>
+        <span class="hint" style="cursor:pointer" onclick="goHome()">← back</span>
+      </div>
+      <div class="label" style="padding:20px 0 6px">APPEARANCE</div>
+      <div class="set-row"><span>Theme</span><span class="seg" id="seg-theme"></span></div>
+      <div class="label" style="padding:20px 0 6px">FOLDER</div>
+      <div class="set-row">
+        <div style="min-width:0">
+          <div id="set-folder" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">–</div>
+          <div class="hint" id="set-folder-sub" style="color:var(--pass)"></div>
+        </div>
+        <button onclick="changeFolder()" style="white-space:nowrap">Change folder</button>
+      </div>
+      <div class="label" style="padding:20px 0 6px">SESSION</div>
+      <div class="set-row"><span>Length</span><span class="seg" id="seg-len"></span></div>
+      <div class="set-row"><span>Max items</span><span class="seg" id="seg-max"></span></div>
+      <div class="set-row">
+        <div><div>Include items not yet due</div><div class="hint">Practice ahead of schedule; results still update the ladder</div></div>
+        <span class="seg" id="seg-notdue"></span>
+      </div>
+      <div class="label" style="padding:20px 0 6px">GRADING</div>
+      <div class="set-row">
+        <div><div>Teach-back answers</div><div class="hint">Queued answers are graded free by your agent on next /whetstone</div></div>
+        <span class="seg" id="seg-grading"></span>
+      </div>
+      <div class="label" style="padding:20px 0 6px">RESET</div>
+      <div class="set-row">
+        <div><div>Forget folder access</div><div class="hint">Revokes this page’s permission; your files are untouched</div></div>
+        <button class="danger" onclick="forgetFolder()">Forget</button>
+      </div>
+    </div>
   </div>
-  <div class="row"><button class="primary" onclick="location.reload()">Back to hub</button></div>
 </div>
 
 <script>
-const IVALS=[1,3,7,16,35], MAX_ITEMS=8, SESSION_SECS=15*60;
-let rootDir=null, decksDir=null, decks=[], selected=new Set(), queue=[], qi=0, results=[], deferred=0, timerId=null, secs=SESSION_SECS;
-const $=id=>document.getElementById(id);
-const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
-const addDays=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const IVALS = [1,3,7,16,35];
+const DEFAULTS = { theme:'system', len:15, max:8, notdue:false, grading:'queue' };
+let cfg = Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('whetstone-cfg')||'{}'));
+let rootDir=null, decksDir=null, decks=[], scope=-1, queue=[], qi=0, results=[], timerId=null, secs=0, pendingCount=0;
 
-// ---- IndexedDB handle persistence ----
-function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('whetstone',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);});}
-async function idbGet(k){const db=await idb();return new Promise(res=>{const t=db.transaction('kv').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(null);});}
-async function idbSet(k,v){const db=await idb();return new Promise(res=>{const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k);t.onsuccess=()=>res();t.onerror=()=>res();});}
+const $ = id => document.getElementById(id);
+const today = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const addDays = (iso,n) => { const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmtDate = d => d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
+
+function saveCfg(){ localStorage.setItem('whetstone-cfg', JSON.stringify(cfg)); }
+function applyTheme(){
+  const dark = cfg.theme==='dark' || (cfg.theme==='system' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
+}
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+
+function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('whetstone',1); r.onupgradeneeded=()=>r.result.createObjectStore('kv'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
+async function idbGet(k){ const db=await idb(); return new Promise(res=>{ const t=db.transaction('kv').objectStore('kv').get(k); t.onsuccess=()=>res(t.result); t.onerror=()=>res(null); }); }
+async function idbSet(k,v){ const db=await idb(); return new Promise(res=>{ const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k); t.onsuccess=()=>res(); t.onerror=()=>res(); }); }
+async function idbDel(k){ const db=await idb(); return new Promise(res=>{ const t=db.transaction('kv','readwrite').objectStore('kv').delete(k); t.onsuccess=()=>res(); t.onerror=()=>res(); }); }
 
 async function restore(){
-  if(!window.showDirectoryPicker){$('pick-err').textContent='This browser lacks the File System Access API — use Chrome, Edge, or Brave (desktop).';$('btn-pick').disabled=true;return;}
-  const h=await idbGet('root');
-  if(h && await h.queryPermission({mode:'readwrite'})==='granted'){rootDir=h;init();}
+  applyTheme();
+  if (!window.showDirectoryPicker){ $('pick-err').textContent='This browser lacks folder access — use Chrome, Edge, or Brave on desktop.'; $('btn-pick').disabled=true; return; }
+  const h = await idbGet('root');
+  if (h){ try { if (await h.queryPermission({mode:'readwrite'})==='granted' || await h.requestPermission({mode:'readwrite'})==='granted'){ rootDir=h; enterApp(); } } catch(e){} }
 }
-$('btn-pick').onclick=async()=>{
-  try{
-    rootDir=await showDirectoryPicker({mode:'readwrite'});
-    await idbSet('root',rootDir); init();
-  }catch(e){ if(e.name!=='AbortError') $('pick-err').textContent=e.message; }
+$('btn-pick').onclick = async () => {
+  try { rootDir = await showDirectoryPicker({mode:'readwrite'}); await idbSet('root', rootDir); enterApp(); }
+  catch(e){ if (e.name!=='AbortError') $('pick-err').textContent = e.message; }
 };
+async function changeFolder(){
+  try { rootDir = await showDirectoryPicker({mode:'readwrite'}); await idbSet('root', rootDir); await loadFolder(); goHome(); } catch(e){}
+}
+async function forgetFolder(){ await idbDel('root'); localStorage.removeItem('whetstone-cfg'); location.reload(); }
 
-async function readFileIn(dir,name){try{const fh=await dir.getFileHandle(name);return await(await fh.getFile()).text();}catch(e){return null;}}
-async function writeFileIn(dir,name,text){const fh=await dir.getFileHandle(name,{create:true});const w=await fh.createWritable();await w.write(text);await w.close();}
+async function readFileIn(dir,name){ try { const fh=await dir.getFileHandle(name); return await (await fh.getFile()).text(); } catch(e){ return null; } }
+async function writeFileIn(dir,name,text){ const fh=await dir.getFileHandle(name,{create:true}); const w=await fh.createWritable(); await w.write(text); await w.close(); }
 
 function parseItems(body){
   const parts=(body||'').split(/^### /m), items=[];
-  for(let i=1;i<parts.length;i++){
+  for (let i=1;i<parts.length;i++){
     const lines=parts[i].split('\n'), id=lines[0].trim();
-    const get=k=>{const l=lines.find(x=>x.trim().startsWith('- '+k+':'));return l?l.trim().slice(k.length+3).trim():'';};
-    items.push({id,prompt:get('prompt'),answer:get('answer'),stage:parseInt(get('stage'))||0,due:get('due'),history:get('history'),status:get('status')||'active'});
+    const get=k=>{ const l=lines.find(x=>x.trim().startsWith('- '+k+':')); return l ? l.trim().slice(k.length+3).trim() : ''; };
+    items.push({ id, prompt:get('prompt'), answer:get('answer'), stage:parseInt(get('stage'))||0, due:get('due'), history:get('history'), status:get('status')||'active' });
   }
   return items;
 }
-function buildDeck(raw,items){
-  const head=raw.split(/^### /m)[0].replace(/\s+$/,'');
+function buildDeck(raw, items){
+  const head = raw.split(/^### /m)[0].replace(/\s+$/,'');
   return head+'\n\n'+items.map(it=>'### '+it.id+'\n- prompt: '+it.prompt+'\n- answer: '+it.answer+'\n- stage: '+it.stage+'\n- due: '+it.due+'\n- history: '+it.history+'\n- status: '+it.status).join('\n\n')+'\n';
 }
 
-async function init(){
-  $('view-pick').classList.add('hidden');$('view-home').classList.remove('hidden');
-  $('today-label').textContent=new Date().toDateString();
-  try{
-    try{decksDir=await rootDir.getDirectoryHandle('decks');}catch(e){decksDir=rootDir;} // flat layouts (e.g. PKM subfolders) work too
-    const skip=['PENDING.md','pending.md','profile.md','README.md','FORMAT.md','SKILL.md'];
-    decks=[];
+async function enterApp(){
+  $('view-pick').classList.add('hidden'); $('view-app').classList.remove('hidden');
+  await loadFolder(); goHome();
+}
+async function loadFolder(){
+  const SKIP=['PENDING.md','pending.md','profile.md','README.md','FORMAT.md','SKILL.md','TRACK.md'];
+  decks=[];
+  try {
+    try { decksDir = await rootDir.getDirectoryHandle('decks'); } catch(e){ decksDir = rootDir; }
     for await (const [name,h] of decksDir.entries()){
-      if(h.kind!=='file'||!name.endsWith('.md')||skip.includes(name))continue;
-      const raw=await(await h.getFile()).text();
-      const items=parseItems(raw);
-      if(!items.length)continue; // not a deck
-      const tm=raw.match(/^title:\s*"?(.+?)"?\s*$/m);
-      decks.push({name,slug:name.replace(/\.md$/,''),title:tm?tm[1]:name,raw,items,dirty:false});
+      if (h.kind!=='file' || !name.endsWith('.md') || SKIP.includes(name)) continue;
+      const raw = await (await h.getFile()).text();
+      const items = parseItems(raw);
+      if (!items.length) continue;
+      const tm = raw.match(/^title:\s*"?(.+?)"?\s*$/m);
+      decks.push({ name, slug:name.replace(/\.md$/,''), title: tm?tm[1]:name.replace(/\.md$/,''), raw, items, dirty:false });
     }
-    const pending=await readFileIn(rootDir,'PENDING.md')||'';
-    $('st-pending').textContent=(pending.match(/^> answer:\s*\S[\s\S]*?(?=^##|\s*$)/gm)||[]).filter(x=>x.replace('> answer:','').trim()).length;
-    render();
-  }catch(e){$('home-err').textContent='Could not read folder — is this a whetstone folder with decks/? ('+e.message+')';}
+    const pending = await readFileIn(rootDir,'PENDING.md') || await readFileIn(rootDir,'pending.md') || '';
+    pendingCount = (pending.match(/^> answer:\s*\S/gm)||[]).length + (pending.match(/^- \[x\]/gmi)||[]).length;
+    $('home-err').textContent='';
+  } catch(e){ $('home-err').textContent='Could not read folder: '+e.message; }
 }
-function dueOf(d){const t=today();return d.items.filter(it=>it.status==='active'&&it.due&&it.due<=t);}
-function render(){
-  const t=today();let due=0,active=0,retired=0;
-  decks.forEach(d=>d.items.forEach(it=>{if(it.status==='retired')retired++;else{active++;if(it.due&&it.due<=t)due++;}}));
-  $('st-due').textContent=due;$('st-active').textContent=active;$('st-retired').textContent=retired;
-  const el=$('deck-list');el.innerHTML='';
-  if(!decks.length)el.innerHTML='<div class="sub">No decks yet. In your agent: "/whetstone &lt;link&gt;" to ingest something.</div>';
-  decks.forEach((d,i)=>{
-    const nd=dueOf(d).length,na=d.items.filter(x=>x.status==='active').length;
-    const div=document.createElement('div');div.className='deck'+(selected.has(i)?' sel':'');
-    div.innerHTML='<input type="checkbox" '+(selected.has(i)?'checked':'')+'><div><div class="t">'+esc(d.title)+'</div><div class="m">'+na+' active</div></div><span class="duepill'+(nd?'':' zero')+'">'+nd+' due</span>';
-    div.onclick=()=>{selected.has(i)?selected.delete(i):selected.add(i);render();};
-    el.appendChild(div);
+
+function dueOf(d){ const t=today(); return d.items.filter(it=>it.status==='active' && it.due && it.due<=t); }
+function poolFor(scopeIdx){
+  const t=today(), pool=[];
+  decks.forEach((d,i)=>{ if (scopeIdx>=0 && i!==scopeIdx) return;
+    d.items.forEach(it=>{ if (it.status!=='active') return; if (cfg.notdue || (it.due && it.due<=t)) pool.push({deck:d,item:it}); });
   });
-  const pool=poolItems();
-  $('btn-start').disabled=pool.length===0;
-  $('btn-start').textContent=pool.length?'Start session ('+Math.min(pool.length,MAX_ITEMS)+' items)':'Start session (nothing due)';
-}
-function poolItems(){
-  const all=$('chk-notdue').checked,t=today(),pool=[];
-  decks.forEach((d,i)=>{if(!selected.has(i))return;d.items.forEach(it=>{if(it.status!=='active')return;if(all||(it.due&&it.due<=t))pool.push({deck:d,item:it});});});
   pool.sort((a,b)=>(a.item.due||'9999')<(b.item.due||'9999')?-1:1);
   return pool;
 }
-$('chk-notdue').onchange=render;
-$('btn-start').onclick=()=>{queue=poolItems().slice(0,MAX_ITEMS);qi=0;results=[];deferred=0;secs=SESSION_SECS;
-  $('view-home').classList.add('hidden');$('view-session').classList.remove('hidden');timerId=setInterval(tick,1000);showQ();};
-function tick(){secs--;$('timer').textContent=Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');if(secs<=60)$('timer').classList.add('warn');if(secs<=0){clearInterval(timerId);finish(true);}}
-const isMCQ=p=>/\(a\)/.test(p)&&/\(b\)/.test(p);
+
+function setScope(i){ scope=i; goHome(); }
+function goHome(){
+  ['pane-session','pane-done','pane-settings'].forEach(p=>$(p).classList.add('hidden'));
+  $('pane-home').classList.remove('hidden');
+  renderSide(); renderHome();
+}
+function renderSide(){
+  const t=today(); let allDue=0;
+  decks.forEach(d=>allDue+=dueOf(d).length);
+  $('side-due').textContent=allDue;
+  $('nav-today').classList.toggle('on', scope===-1);
+  const el=$('side-decks'); el.innerHTML='';
+  decks.forEach((d,i)=>{
+    const nd=dueOf(d).length;
+    const div=document.createElement('div');
+    div.className='nav'+(scope===i?' on':'')+(nd?' hasdue':'');
+    div.onclick=()=>setScope(i);
+    div.innerHTML='<span class="n">'+esc(d.title)+'</span><span class="c'+(nd?' due':'')+'">'+(nd?nd+' due':'0 due')+'</span>';
+    el.appendChild(div);
+  });
+  if (!decks.length) el.innerHTML='<div class="nav"><span class="n">No decks yet</span></div>';
+  let active=0, retired=0, streakNote='';
+  decks.forEach(d=>d.items.forEach(it=>it.status==='retired'?retired++:active++));
+  $('foot-stats').textContent = active+' active · '+retired+' mastered';
+}
+function renderHome(){
+  const scoped = scope>=0 ? [decks[scope]] : decks;
+  let due=0, active=0, retired=0;
+  scoped.forEach(d=>d.items.forEach(it=>{ if(it.status==='retired')retired++; else { active++; if(it.due&&it.due<=today())due++; } }));
+  $('home-date').textContent = fmtDate(new Date());
+  $('home-title').textContent = scope>=0 ? decks[scope].title : (due+' due today');
+  $('home-sub').textContent = scope>=0 ? (due+' due today') : '';
+  $('st-due').textContent=due; $('st-active').textContent=active; $('st-retired').textContent=retired; $('st-queued').textContent=pendingCount;
+  const pool = poolFor(scope);
+  $('btn-begin').disabled = pool.length===0;
+  $('begin-hint').textContent = pool.length ? cfg.len+' min session · '+Math.min(pool.length,cfg.max)+' items' : 'Nothing due' + (cfg.notdue?'':' — enable “include not yet due” in settings to practice ahead');
+}
+$('btn-begin').onclick = () => {
+  queue = poolFor(scope).slice(0, cfg.max); qi=0; results=[]; secs=cfg.len*60;
+  $('pane-home').classList.add('hidden'); $('pane-session').classList.remove('hidden');
+  clearInterval(timerId); timerId=setInterval(tick,1000); showQ();
+};
+function tick(){
+  secs--; $('q-timer').textContent = Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
+  if (secs<=0){ clearInterval(timerId); finish(true); }
+}
+const isMCQ = p => /\(a\)/.test(p) && /\(b\)/.test(p);
 function showQ(){
-  if(qi>=queue.length)return finish(false);
-  const{deck,item}=queue[qi];
-  $('progress').textContent='Item '+(qi+1)+' of '+queue.length;
-  $('q-deck').textContent=deck.title;$('q-stage').textContent='stage '+item.stage+' · due '+item.due;
-  $('q-result').innerHTML='';$('q-actions').innerHTML='';
-  if(isMCQ(item.prompt)){
-    $('q-prompt').textContent=item.prompt.split(/\(a\)/)[0].replace(/^MCQ\s*[—-]\s*/,'').trim();
+  if (qi>=queue.length) return finish(false);
+  const {deck,item}=queue[qi];
+  $('q-meta').textContent = deck.title.toUpperCase()+' · '+(qi+1)+' OF '+queue.length;
+  $('q-timer').textContent = Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
+  $('q-strokes').innerHTML = queue.map((_,i)=>'<span class="'+(i<qi?'done':'')+'"></span>').join('');
+  $('q-result').innerHTML=''; $('q-actions').innerHTML='';
+  if (isMCQ(item.prompt)){
+    $('q-prompt').textContent = item.prompt.split(/\(a\)/)[0].replace(/^MCQ\s*[—-]\s*/,'').trim();
     $('q-input').innerHTML='';
     item.prompt.split(/(?=\([a-d]\)\s)/).slice(1).forEach(o=>{
       const letter=o.match(/^\(([a-d])\)/)[1];
-      const b=document.createElement('button');b.className='opt';b.textContent=o.trim();b.onclick=()=>gradeMCQ(letter,b);
+      const b=document.createElement('button'); b.className='opt'; b.textContent=o.trim();
+      b.onclick=()=>gradeMCQ(letter,b);
       $('q-input').appendChild(b);
     });
-  }else{
-    $('q-prompt').textContent=item.prompt;
-    $('q-input').innerHTML='<textarea id="ans" placeholder="Answer from memory — no peeking."></textarea>';
-    addBtn('Queue for agent grading','primary',defer);
-    addBtn('Reveal & self-grade','ghost',reveal);
+  } else {
+    $('q-prompt').textContent = item.prompt;
+    $('q-input').innerHTML='<textarea id="ans" placeholder="Answer from memory"></textarea>';
+    if (cfg.grading==='queue') addBtn('Queue for grading','ink',deferAnswer);
+    addBtn('Reveal and self-grade','quiet',reveal);
   }
 }
-function addBtn(l,c,f){const b=document.createElement('button');b.className=c;b.textContent=l;b.onclick=f;$('q-actions').appendChild(b);return b;}
+function addBtn(label,cls,fn){ const b=document.createElement('button'); b.className=cls; b.textContent=label; b.onclick=fn; $('q-actions').appendChild(b); return b; }
 function gradeMCQ(letter,btn){
-  const{item}=queue[qi];const right=(item.answer.match(/\(([a-d])\)/)||[])[1];
+  const {item}=queue[qi]; const right=(item.answer.match(/\(([a-d])\)/)||[])[1];
   document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-  const ok=letter===right;btn.classList.add(ok?'right':'wrong');
-  if(!ok)document.querySelectorAll('.opt').forEach(b=>{if(b.textContent.startsWith('('+right+')'))b.classList.add('reveal');});
-  showAnswer(item);record(ok?'pass':'fail','MCQ '+(ok?'correct':'incorrect — answer was ('+right+')'));
+  const ok = letter===right;
+  btn.classList.add(ok?'right':'wrong');
+  if (!ok) document.querySelectorAll('.opt').forEach(b=>{ if (b.textContent.startsWith('('+right+')')) b.classList.add('right'); });
+  record(ok?'pass':'fail', item.answer);
 }
-async function defer(){
-  const{deck,item}=queue[qi];const ans=($('ans')?$('ans').value:'').trim();
-  if(!ans){reveal();return;}
-  let pending=await readFileIn(rootDir,'PENDING.md')||'# Whetstone — Pending Worksheet\n';
-  pending+='\n## H. ['+deck.slug+' / '+item.id+'] teach-back (hub, '+today()+')\n'+item.prompt+'\n\n> answer: '+ans.replace(/\n/g,'\n> ')+'\n';
+async function deferAnswer(){
+  const {deck,item}=queue[qi]; const ans=($('ans')?$('ans').value:'').trim();
+  if (!ans){ reveal(); return; }
+  let pending = await readFileIn(rootDir,'PENDING.md') || '# Whetstone — Pending Worksheet\n';
+  pending += '\n## H. ['+deck.slug+' / '+item.id+'] teach-back (hub, '+today()+')\n'+item.prompt+'\n\n> answer: '+ans.replace(/\n/g,'\n> ')+'\n';
   await writeFileIn(rootDir,'PENDING.md',pending);
-  deferred++;results.push({id:item.id,prompt:item.prompt,grade:'queued'});
-  const fb=document.createElement('div');fb.className='feedback';fb.innerHTML='📮 Queued — run <b>/whetstone</b> in your agent to grade it (free).';
-  $('q-result').appendChild(fb);$('q-actions').innerHTML='';
-  addBtn(qi+1<queue.length?'Next →':'Finish session','primary',()=>{qi++;showQ();});
+  pendingCount++;
+  results.push({id:item.id, prompt:item.prompt, grade:'queued'});
+  const div=document.createElement('div'); div.className='result';
+  div.innerHTML='<div class="r-label" style="color:var(--muted)">QUEUED</div><div class="r-body">Graded free on your next /whetstone.</div>';
+  $('q-result').innerHTML=''; $('q-result').appendChild(div);
+  $('q-actions').innerHTML=''; addBtn(qi+1<queue.length?'Next':'Finish','primary',()=>{qi++;showQ();});
 }
-function reveal(){const{item}=queue[qi];showAnswer(item);$('q-actions').innerHTML='';
-  addBtn('Pass','gbtn pass',()=>record('pass','self-graded'));addBtn('Partial','gbtn partial',()=>record('partial','self-graded'));addBtn('Fail','gbtn fail',()=>record('fail','self-graded'));}
-function showAnswer(item){const b=document.createElement('div');b.className='answerbox';b.innerHTML='<b>Expected answer</b>'+esc(item.answer);$('q-result').innerHTML='';$('q-result').appendChild(b);}
-function record(grade,feedback){
-  const q=queue[qi],it=q.item,t=today();
-  if(grade==='pass'){if(it.stage>=4)it.status='retired';else it.stage++;}
-  else if(grade==='fail')it.stage=Math.max(0,it.stage-1);
+function reveal(){
+  const {item}=queue[qi];
+  const div=document.createElement('div'); div.className='answer';
+  div.innerHTML='<span class="label">EXPECTED ANSWER</span>'+esc(item.answer);
+  $('q-result').innerHTML=''; $('q-result').appendChild(div);
+  $('q-actions').innerHTML='';
+  addBtn('Pass','',()=>record('pass','self-graded')).style.color='var(--pass)';
+  addBtn('Partial','',()=>record('partial','self-graded')).style.color='var(--partial)';
+  addBtn('Fail','',()=>record('fail','self-graded')).style.color='var(--accent)';
+}
+function record(grade, detail){
+  const q=queue[qi], it=q.item, t=today();
+  if (grade==='pass'){ if (it.stage>=4) it.status='retired'; else it.stage++; }
+  else if (grade==='fail') it.stage=Math.max(0,it.stage-1);
   it.due=addDays(t,IVALS[Math.min(it.stage,4)]);
   it.history=(it.history?it.history+', ':'')+t+' '+grade+' (hub)';
-  q.deck.dirty=true;results.push({id:it.id,prompt:it.prompt,grade});
-  const fb=document.createElement('div');fb.className='feedback';
-  fb.innerHTML='<span class="g-'+grade+'">'+grade.toUpperCase()+'</span> — '+esc(feedback)+(it.status==='retired'?' 🎓 Retired — mastered.':' Next review: '+it.due);
-  $('q-result').appendChild(fb);$('q-actions').innerHTML='';
-  addBtn(qi+1<queue.length?'Next →':'Finish session','primary',()=>{qi++;showQ();});
+  q.deck.dirty=true;
+  results.push({id:it.id, prompt:it.prompt, grade});
+  const div=document.createElement('div'); div.className='result '+grade;
+  const lbl = grade.toUpperCase()+(it.status==='retired'?' · MASTERED — RETIRED':' · NEXT REVIEW '+it.due);
+  div.innerHTML='<div class="r-label g-'+grade+'">'+lbl+'</div><div class="r-body">'+esc(detail)+'</div>';
+  $('q-result').appendChild(div);
+  $('q-actions').innerHTML='';
+  addBtn(qi+1<queue.length?'Next':'Finish','primary',()=>{qi++;showQ();});
 }
 async function finish(timedOut){
   clearInterval(timerId);
-  $('view-session').classList.add('hidden');$('view-done').classList.remove('hidden');
-  const c={pass:0,partial:0,fail:0,queued:0};results.forEach(r=>c[r.grade]++);
-  $('done-score').textContent=(timedOut?'⏰ Time cap hit. ':'')+c.pass+' pass · '+c.partial+' partial · '+c.fail+' fail'+(c.queued?' · '+c.queued+' queued for agent':'');
-  $('done-list').innerHTML=results.map(r=>'<li><span class="g-'+(r.grade==='queued'?'partial':r.grade)+'">'+r.grade+'</span> — '+esc(r.prompt.slice(0,90))+'…</li>').join('');
+  $('pane-session').classList.add('hidden'); $('pane-done').classList.remove('hidden');
+  const c={pass:0,partial:0,fail:0,queued:0}; results.forEach(r=>c[r.grade]++);
+  $('done-score').textContent=(timedOut?'Time — ':'')+c.pass+' pass · '+c.partial+' partial · '+c.fail+' fail'+(c.queued?' · '+c.queued+' queued':'');
+  $('done-list').innerHTML=results.map(r=>'<li><b class="g-'+r.grade+'">'+r.grade+'</b> — '+esc(r.prompt.slice(0,80))+'…</li>').join('');
   $('save-status').textContent='Saving…';
-  try{
-    for(const d of decks){if(!d.dirty)continue;await writeFileIn(decksDir,d.name,buildDeck(d.raw,d.items));}
-    $('save-status').textContent='✓ Saved to your files.'+(c.queued?' Teach-backs await /whetstone grading.':'');
-  }catch(e){$('save-status').textContent='⚠ Save failed: '+e.message;}
+  try {
+    for (const d of decks){ if (!d.dirty) continue; await writeFileIn(decksDir, d.name, buildDeck(d.raw, d.items)); d.raw=buildDeck(d.raw,d.items); d.dirty=false; }
+    $('save-status').textContent='Saved to your files.'+(c.queued?' Queued answers await /whetstone.':'');
+  } catch(e){ $('save-status').textContent='Save failed: '+e.message; }
+  renderSide();
 }
+
+function seg(el, opts, get, set){
+  const host=$(el); host.innerHTML='';
+  opts.forEach(o=>{
+    const s=document.createElement('span'); s.textContent=o.label;
+    s.className = get()===o.value ? 'on' : '';
+    s.onclick=()=>{ set(o.value); saveCfg(); applyTheme(); renderSettings(); renderHome(); };
+    host.appendChild(s);
+  });
+}
+function showSettings(){
+  ['pane-home','pane-session','pane-done'].forEach(p=>$(p).classList.add('hidden'));
+  $('pane-settings').classList.remove('hidden');
+  renderSettings();
+}
+function renderSettings(){
+  seg('seg-theme',[{label:'System',value:'system'},{label:'Light',value:'light'},{label:'Dark',value:'dark'}],()=>cfg.theme,v=>cfg.theme=v);
+  seg('seg-len',[{label:'10 min',value:10},{label:'15 min',value:15},{label:'20 min',value:20}],()=>cfg.len,v=>cfg.len=v);
+  seg('seg-max',[{label:'5',value:5},{label:'8',value:8},{label:'12',value:12}],()=>cfg.max,v=>cfg.max=v);
+  seg('seg-notdue',[{label:'Off',value:false},{label:'On',value:true}],()=>cfg.notdue,v=>cfg.notdue=v);
+  seg('seg-grading',[{label:'Queue',value:'queue'},{label:'Self-grade',value:'self'}],()=>cfg.grading,v=>cfg.grading=v);
+  $('set-folder').textContent = rootDir ? rootDir.name : '–';
+  $('set-folder-sub').textContent = rootDir ? 'connected · '+decks.length+' deck'+(decks.length===1?'':'s')+' · read & write' : '';
+}
+
 restore();
 </script>
 </body>
