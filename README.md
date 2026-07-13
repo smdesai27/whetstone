@@ -1,7 +1,7 @@
 # 🪨 Whetstone
 
-**The spaced-repetition layer for AI agents.** Stop forgetting what you read, watch, and
-listen to — your existing AI agent becomes your tutor, and your memory lives in plain
+**Stop consuming content passively.** Keep on reviewing and engaging with the things
+you read, watch, and listen to — your AI agent becomes your tutor, and your memory lives in plain
 markdown files you own.
 
 Watch a video, read a paper, listen to a podcast → tell your agent `/whetstone <link>` → it
@@ -10,20 +10,24 @@ expanding schedule (1, 3, 7, 16, 35 days) until you've mastered it. Fifteen minu
 
 ## Why this instead of Anki / flashcard apps
 
-- **Your agent is the tutor.** Feynman-style teach-backs graded by a frontier model in real
-  conversation — not multiple choice checked by a cheap bundled API. And since grading runs
-  inside your existing agent subscription, there are **no API costs**.
+- **Your agent is the tutor.** Teach-backs are graded by your own agent in real
+  conversation — not by a cheap bundled model. Grading runs inside the agent subscription
+  you already have — **zero API cost by default** (hub MCQs grade themselves locally; an
+  optional live-API tier exists for instant feedback).
 - **Files are the API.** Decks are plain markdown ([FORMAT.md](FORMAT.md)) in a folder you
   choose. Put it inside your Obsidian vault or PKM and it's a native part of your system;
   don't have one, and it's just a folder. No database, no account, no silo. Your sync
   (iCloud, Dropbox, Obsidian Sync, git) is the sync.
 - **Zero card-making friction.** The agent writes the items — calibrated to mechanisms and
-  application, never trivia — and a learner profile ([profile.md](profile.md)) tracks *how*
-  you misunderstand things so future items target your actual weak spots.
-- **No review debt.** Hard 15-minute / 8-item cap. Items you've mastered retire permanently.
-  Backlogs get pruned, not guilted over.
+  application, never trivia — and a learner profile, created in your folder at setup
+  ([template](profile.md)), tracks *how* you misunderstand things so future items target
+  your actual weak spots.
+- **No review debt.** Sessions are capped — 15 minutes / 8 items by default, adjustable in
+  the hub's settings. Items you've mastered retire permanently. Backlogs get pruned, not
+  guilted over.
 - **Model-agnostic.** The skill is a markdown instruction file; any capable agent
-  (Claude Code, Cowork, Codex, Cursor…) can run the system over the same files.
+  (Claude Code, Cowork, Codex, Cursor…) can run the system over the same files. Item quality
+  scales with the model you bring.
 
 ## The pieces
 
@@ -45,7 +49,7 @@ expanding schedule (1, 3, 7, 16, 35 days) until you've mastered it. Fifteen minu
    Chrome/Edge/Brave and point it at your folder — no download, no account. Or open
    `hub/index.html` locally for a fully-offline copy.
 
-## Privacy model (read this once)
+## Privacy model
 
 The hub is a **static page with zero backend**. It makes no network calls; your decks,
 answers, and profile are read and written through your browser's local folder permission and
