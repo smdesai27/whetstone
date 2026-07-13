@@ -1,7 +1,7 @@
 # 🪨 Whetstone
 
-**The spaced-repetition layer for AI agents.** Stop forgetting what you read, watch, and
-listen to — your existing AI agent becomes your tutor, and your memory lives in plain
+**Stop consuming content passively.** Keep on reviewing and engaging with the things
+you read, watch, and listen to — your AI agent becomes your tutor, and your memory lives in plain
 markdown files you own.
 
 Watch a video, read a paper, listen to a podcast → tell your agent `/whetstone <link>` → it
