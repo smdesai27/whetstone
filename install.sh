@@ -1,8 +1,10 @@
 #!/bin/sh
 # Whetstone skill installer (POSIX sh; macOS / Linux / WSL / Git-Bash).
 #
-# Installs SKILL.md into your agent's skills directory. Defaults to Claude Code
+# Installs SKILL.md (plus FORMAT.md, which it references) into your agent's
+# skills directory. Defaults to Claude Code
 # (~/.claude/skills/whetstone/SKILL.md); use --dir to target any other agent.
+# Re-running it updates an existing install (the old SKILL.md is backed up).
 #
 #   Local:   ./install.sh
 #   Piped:   curl -fsSL https://raw.githubusercontent.com/smdesai27/whetstone/main/install.sh | sh
@@ -87,7 +89,8 @@ fetch() { # url out
 }
 
 TMP=""
-cleanup() { [ -n "$TMP" ] && rm -f "$TMP" || true; }
+FMT_TMP=""
+cleanup() { rm -f ${TMP:+"$TMP"} ${FMT_TMP:+"$FMT_TMP"} || true; }
 trap cleanup EXIT
 
 if SRC=$(resolve_local); then
@@ -114,6 +117,18 @@ else
   say "Installed skill."
 fi
 
+# ---- FORMAT.md (the file-format spec SKILL.md references) --------------------
+if [ -z "$TMP" ] && [ -f "$(dirname -- "$SRC")/FORMAT.md" ]; then
+  cp -- "$(dirname -- "$SRC")/FORMAT.md" "$TARGET_DIR/FORMAT.md"
+else
+  FMT_TMP="$(mktemp "${TMPDIR:-/tmp}/whetstone-format.XXXXXX")"
+  if fetch "$REPO_RAW/FORMAT.md" "$FMT_TMP" && [ -s "$FMT_TMP" ]; then
+    cp -- "$FMT_TMP" "$TARGET_DIR/FORMAT.md"
+  else
+    warn "note: could not fetch FORMAT.md — the skill still works; re-run later to add it"
+  fi
+fi
+
 say ""
 say "  ->  $DEST"
 say ""
@@ -124,4 +139,5 @@ say "  2. Add a source:        /whetstone <link or file>"
 say "  3. Open the read-only hub and point it at that folder:"
 say "       $HUB_URL   (Chrome / Edge / Brave), or open hub/index.html locally."
 say ""
+say "Update later with:  /whetstone update   (or just re-run this installer)"
 say "Installing for a different agent? Run:  install.sh --print-paths"

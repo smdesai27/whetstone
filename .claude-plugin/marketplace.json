@@ -1,0 +1,15 @@
+{
+  "name": "whetstone",
+  "description": "Whetstone — remember what you read, watch, and listen to. One plugin: the /whetstone spaced-retrieval skill over plain markdown files you own.",
+  "owner": {
+    "name": "Sanil Desai",
+    "url": "https://github.com/smdesai27"
+  },
+  "plugins": [
+    {
+      "name": "whetstone",
+      "source": "./",
+      "description": "Spaced-retrieval understanding system over plain markdown — /whetstone ingests what you consume, quizzes you with a fresh question each time, and reviews it all on an expanding schedule."
+    }
+  ]
+}

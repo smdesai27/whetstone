@@ -101,6 +101,11 @@ curl -fsSL https://raw.githubusercontent.com/smdesai27/whetstone/main/install.sh
 # Windows PowerShell
 irm https://raw.githubusercontent.com/smdesai27/whetstone/main/install.ps1 | iex
 ```
+```text
+# Claude Code — as a plugin instead (adds an update channel; see Updating below)
+/plugin marketplace add smdesai27/whetstone
+/plugin install whetstone@whetstone
+```
 
 Or copy `SKILL.md` into your agent's skills directory by hand (Claude Code:
 `~/.claude/skills/whetstone/SKILL.md`; run `install.sh --print-paths` for every other agent).
@@ -112,6 +117,19 @@ Either way, once you're set up: open the hub at
 download, no account. Want to see it populated first? Point it at this repo's `sample/` folder.
 
 **Every agent, PKM, OS, and sync combination is covered in [INSTALL.md](INSTALL.md).**
+
+## Updating
+
+An update only ever replaces the skill file — your decks, log, and profile live in your own
+folder and are never touched.
+
+- **Installed by copy** (installer, agent prompt, or by hand): run `/whetstone update` — the
+  skill compares its version against this repo, backs up your current copy, and replaces
+  itself. Re-running the install one-liner does the same thing.
+- **Installed as a plugin**: run `claude plugin update whetstone` and restart, or enable
+  auto-update for the marketplace under `/plugin` → Marketplaces.
+- Whetstone never phones home: no update check runs unless you ask, or you opt in to a
+  rate-limited one with `"updates": { "check": true }` in `whetstone.json`.
 
 ## Daily loop
 

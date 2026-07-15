@@ -68,6 +68,21 @@ Both scripts create the skills directory if it's missing, back up any existing `
 print your next steps. Run `install.sh --print-paths` (or `install.ps1 -PrintPaths`) to see the
 path for every agent, and `--dir DIR` / `-Dir DIR` to install somewhere else.
 
+### Claude Code — as a plugin (adds an update channel)
+
+This repo is its own plugin marketplace:
+
+```text
+/plugin marketplace add smdesai27/whetstone
+/plugin install whetstone@whetstone
+```
+
+Installed this way, new releases arrive via `claude plugin update whetstone` (restart to
+apply) — or automatically, if you enable auto-update for the marketplace under `/plugin` →
+**Marketplaces** (off by default for third-party marketplaces). Note that Claude Code
+namespaces plugin skills, so it may list as `/whetstone:whetstone`; both forms reach the same
+skill.
+
 ### By hand, per agent
 
 Copy `SKILL.md` to the path for your agent:
@@ -156,6 +171,22 @@ never writes, never grades, and makes zero network calls; reviewing always happe
 `sample/` folder. Point the hub at `whetstone/sample/` and you'll see decks, due items, sharp and
 archived concepts, a log, and a profile immediately. Delete it (or just ignore it) once you have
 real decks.
+
+---
+
+## Updating the skill
+
+An update only ever replaces the installed skill files (`SKILL.md`, `FORMAT.md`) — your data
+folder is never touched, and a newer skill always reads older-format files.
+
+| How you installed | How you update |
+|---|---|
+| Installer script, agent prompt, or by hand | Run `/whetstone update` — it fetches the latest `SKILL.md` from this repo, compares versions, backs up your copy, and replaces it. Re-running the install one-liner is equivalent. |
+| Claude Code plugin | `claude plugin update whetstone` (restart to apply), or enable auto-update under `/plugin` → Marketplaces |
+
+By default Whetstone never checks for updates on its own — no phoning home. To opt in to a
+rate-limited check (at most once every 14 days, during a review session), set
+`"updates": { "check": true }` in `whetstone.json`.
 
 ---
 

@@ -111,13 +111,21 @@ Ingestion consults this file to write probes that target known patterns.
   "version": "0.2",
   "created": "2026-07-12",
   "sync": "icloud",
-  "session": { "minutes": 15, "max_concepts": 8 }
+  "session": { "minutes": 15, "max_concepts": 8 },
+  "updates": { "check": false, "last_checked": "2026-07-15" }
 }
 ```
 
 **All configuration lives here**, not in any client's local storage — so it syncs with your
 files. `sync` is an informational note (Whetstone never implements sync, it inherits yours).
 `session` caps apply to every client and to the skill.
+
+`version` is the version of **this file format**, not of the skill — the skill carries its own
+`version` in `SKILL.md`'s frontmatter, and a newer skill must read older-format folders
+gracefully (migrations are proposed, never silent). `updates` is optional: with
+`"check": true`, the skill may compare the installed skill version against the repo at most
+once every 14 days during a session, writing `last_checked` back. Absent or `false` — the
+default — the skill never checks the network for updates.
 
 ## Scheduling contract (the skill is the only writer)
 

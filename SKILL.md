@@ -1,5 +1,6 @@
 ---
 name: whetstone
+version: 0.3.0
 description: >
   Spaced-retrieval understanding system over plain markdown. Use when the user invokes
   /whetstone, asks to be quizzed on media they consumed (paper, video, podcast, article),
@@ -31,7 +32,8 @@ time, spaced — never frozen Q&A. The schedule ladder's exact shape barely matt
 1. **No config anywhere** → Setup mode.
 2. **Argument has a link / file / content reference** → Ingest mode.
 3. **Argument mentions reflecting / a film / show / novel** → Reflect mode.
-4. **No argument** → Session mode.
+4. **Argument is `update` / `upgrade` / asks about a new skill version** → Update mode.
+5. **No argument** → Session mode.
 
 ## Setup mode (first run)
 
@@ -98,6 +100,11 @@ Goal: a synced folder plus its four state files, created deterministically, in u
 6. If nothing is due: say so in one line and stop. Never invent reviews.
 7. If the due backlog exceeds the cap for 3+ days: propose *archiving* or *demoting to gist*
    the lowest-value concepts. Never guilt, never grind.
+8. **Opt-in update nudge:** only if `whetstone.json` has `"updates": { "check": true }` and its
+   `last_checked` is absent or >14 days old — fetch the repo SKILL.md's frontmatter, write
+   today to `updates.last_checked`, and if the remote `version` is newer add one line to the
+   close: "skill update available — run /whetstone update". Never check otherwise; never let
+   it block or lengthen the session.
 
 ## The probe engine — how to write each question
 
@@ -121,6 +128,27 @@ Not a retention problem — no concepts, no scheduling. A structured conversatio
 argue or make you feel, what tension stayed unresolved, what does it connect to in your life or
 work, one idea worth stealing. Most reflections produce zero files — that's correct; offer to
 save a single note only if a real insight emerges. (A LOG.md line is still fine.)
+
+## Update mode (`/whetstone update`)
+
+Updates the skill itself. The data folder is never touched.
+
+1. **Locate the installed copy** — the SKILL.md this skill was loaded from (Claude Code
+   default: `~/.claude/skills/whetstone/SKILL.md`; other agents per their skills path). If that
+   path is inside a plugin/marketplace-managed directory (e.g. `~/.claude/plugins/…`), don't
+   edit it — tell the user to run `claude plugin update whetstone` and restart (or enable
+   auto-update under `/plugin` → Marketplaces), and stop.
+2. **Fetch** `https://raw.githubusercontent.com/smdesai27/whetstone/main/SKILL.md` and compare
+   its frontmatter `version` against the installed one.
+   - Not newer → "already current (v<X>)". Stop.
+   - Newer → back up the installed file to `SKILL.md.bak.<YYYYMMDDHHMMSS>`, write the fetched
+     copy over it, and refresh `FORMAT.md` beside it from the same repo path if one is there.
+3. **Report** `v<old> → v<new>` and note that the new version loads next session. If the fetch
+   or write fails, give the fallback instead: re-run
+   `curl -fsSL https://raw.githubusercontent.com/smdesai27/whetstone/main/install.sh | sh`.
+
+Compatibility contract: a newer skill always reads older-format data files; if a format
+migration is ever needed, propose it and get a yes — never rewrite decks silently.
 
 ## Scheduling contract
 
@@ -153,3 +181,5 @@ hear them out and re-grade honestly — sometimes they're right.
 - Respect the caps (15 min / 8 concepts). Archive/demote aggressively. No review debt, ever.
 - Preserve unknown fields when rewriting a deck.
 - Zero API cost by default: grading happens here, inside the user's agent session.
+- Updates replace only the installed skill files, never the data folder. No update check ever
+  runs unless the user asks (`/whetstone update`) or opted in via `updates.check`.

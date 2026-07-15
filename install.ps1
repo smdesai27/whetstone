@@ -1,8 +1,10 @@
 <#
   Whetstone skill installer (Windows PowerShell 5+ / PowerShell 7+).
 
-  Installs SKILL.md into your agent's skills directory. Defaults to Claude Code
-  (%USERPROFILE%\.claude\skills\whetstone\SKILL.md); use -Dir for any other agent.
+  Installs SKILL.md (plus FORMAT.md, which it references) into your agent's
+  skills directory. Defaults to Claude Code
+  (%USERPROFILE%\.claude\skills\whetstone\SKILL.md); use -Dir for any other
+  agent. Re-running it updates an existing install (the old SKILL.md is backed up).
 
     Local:   .\install.ps1
     Piped:   irm https://raw.githubusercontent.com/smdesai27/whetstone/main/install.ps1 | iex
@@ -87,6 +89,17 @@ if (Test-Path $Dest) {
   Write-Output "Installed skill."
 }
 
+# ---- FORMAT.md (the file-format spec SKILL.md references) ----
+if ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot 'FORMAT.md'))) {
+  Copy-Item -Path (Join-Path $PSScriptRoot 'FORMAT.md') -Destination (Join-Path $TargetDir 'FORMAT.md') -Force
+} else {
+  try {
+    Invoke-WebRequest -Uri "$RepoRaw/FORMAT.md" -OutFile (Join-Path $TargetDir 'FORMAT.md') -UseBasicParsing
+  } catch {
+    Write-Warning "could not fetch FORMAT.md - the skill still works; re-run later to add it"
+  }
+}
+
 Write-Output ""
 Write-Output "  ->  $Dest"
 Write-Output ""
@@ -97,4 +110,5 @@ Write-Output "  2. Add a source:        /whetstone <link or file>"
 Write-Output "  3. Open the read-only hub and point it at that folder:"
 Write-Output "       $HubUrl   (Chrome / Edge / Brave), or open hub/index.html locally."
 Write-Output ""
+Write-Output "Update later with:  /whetstone update   (or just re-run this installer)"
 Write-Output "Installing for a different agent? Run:  .\install.ps1 -PrintPaths"
