@@ -35,19 +35,30 @@ time, spaced — never frozen Q&A. The schedule ladder's exact shape barely matt
 
 ## Setup mode (first run)
 
-Ask, in one round:
-1. "Do you keep a PKM / vault (Obsidian, Logseq, …)?" If yes → "Where inside it should the
-   whetstone folder live?" If no → create `~/Whetstone/`.
-2. "What syncs it (iCloud, Dropbox, Obsidian Sync, git)?" Strongly recommend a synced
-   location — it's what makes phone review work. Never build sync; inherit theirs.
+Goal: a synced folder plus its four state files, created deterministically, in under a minute.
 
-Then create `whetstone.json` (sync note, session caps), an empty `decks/`, `profile.md`, and
-`LOG.md`. Introduce the hub in plain words:
-> "There's a visual companion at **https://<REPO-OWNER>.github.io/whetstone/** — bookmark it.
-> It's a **read-only viewer**: it shows what's sharp, what's due, and your log on any device,
-> but it never changes anything and never grades. All reviewing happens by running /whetstone.
-> It runs entirely in your browser; your files never leave your computer. Use Chrome, Edge, or
-> Brave (or open `hub/index.html` locally)."
+1. **Locate the folder.** Ask in one round, then confirm the resolved absolute path before
+   writing anything:
+   - "Do you keep a PKM / vault (Obsidian, Logseq, …)?" If yes → "Where inside it should the
+     whetstone folder live?" (e.g. `<vault>/whetstone/`). If no → default to `~/Whetstone/`.
+   - "What syncs that location (iCloud, Dropbox, Obsidian Sync, git, or nothing)?" Strongly
+     recommend a synced path — it's what makes phone and hub review work. Never build sync;
+     record theirs as an informational note.
+2. **Create the folder and its four files — only if missing, never overwriting existing state**
+   (see `FORMAT.md` for the exact shape of each):
+   - `whetstone.json` →
+     `{ "version": "0.2", "created": "<today>", "sync": "<their answer>", "session": { "minutes": 15, "max_concepts": 8 } }`
+   - `decks/` → empty directory (one deck file per source is added at ingest).
+   - `profile.md` → a `# Learner Profile` title and a `## Misconception patterns` heading (empty).
+   - `LOG.md` → a `# Whetstone — Consumption Log` title and the one-line format reminder.
+3. **Introduce the read-only hub** in plain words:
+   > "Your visual companion is **https://smdesai27.github.io/whetstone/** — bookmark it. It's a
+   > **read-only viewer**: it shows what's sharp, what's due, and your log on any device, but it
+   > never changes anything and never grades. All reviewing happens by running /whetstone. It
+   > runs entirely in your browser; your files never leave your computer. Use Chrome, Edge, or
+   > Brave (or open `hub/index.html` locally), then point it at the folder above."
+4. **Hand off.** Confirm what was created and where, then: "Add your first source with
+   `/whetstone <link or file>`, or run `/whetstone` once you have due items."
 
 ## Ingest mode ("quiz me on this and add it")
 
