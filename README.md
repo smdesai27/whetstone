@@ -1,7 +1,7 @@
 # 🪨 Whetstone
 
 **Remember what you read, watch, and listen to — well enough to explain it months later.** Your
-AI agent becomes the tutor; your memory lives in plain markdown files you own. It's not AI Anki.
+AI agent becomes the tutor; your memory lives in plain markdown files you own.
 
 <p align="center">
   <img src="assets/whetstone-demo.gif" alt="Whetstone demo: feed your AI agent a lecture, it extracts the ideas that matter and quizzes you on them, grades your explanation, then reviews everything you've consumed on a spaced schedule — all from one skill, over plain markdown files." width="100%">
@@ -14,35 +14,36 @@ one memorized card. Fifteen minutes a day, max.
 
 ## The problem it solves
 
-You watch a video that explains PPO completely, feel like you learned it, and couldn't explain
-it in an interview a month later. That gap is the target. The failure isn't that a fact leaked
-out — it's that you only ever *recognized* the idea while it was explained to you; you never
-*generated* the explanation yourself. Whetstone makes you generate it, right after consuming and
-again at spaced intervals, from a fresh angle each time.
+Watching a lecture that explains something clearly feels like learning it — and a week later it's
+gone. The gap isn't a fact that leaked out; it's that the idea was only ever *recognized* while
+someone else explained it, never *generated* from memory. Whetstone closes that gap: produce the
+explanation right after consuming, then again at spaced intervals, reworded each time.
 
-## Why this isn't "AI Anki"
+## What makes it work
 
-- **The unit is a concept, not a card.** Each item stores the correct explanation and a *menu of
-  angles* — never a frozen question. The skill writes a new question every session (derive it,
-  apply it to your work, break it). A card trains recognition of itself; varied retrieval is what
-  transfers to a reworded question ([the science](#the-science)).
-- **Your agent is the tutor.** Teach-backs are graded in real conversation against a reference
-  model — it names the exact joint you missed. Grading runs inside the agent subscription you
-  already have: **zero API cost.**
-- **Targeting, not just construction.** The hard part isn't making cards, it's deciding what
-  deserves to be remembered. Every source is triaged into **core** (durable, kept for years),
-  **gist** (situational, held while relevant), or **log** (a searchable one-line trace, no
-  reviews). Consuming something and carding *nothing* is a normal, correct outcome.
+- **A concept, not a card.** Each item stores the correct explanation and a *menu of angles* —
+  never a frozen question. The skill writes a new question every session: derive it, apply it,
+  break it. Recognizing a fixed card isn't understanding; varied retrieval is what transfers to a
+  question you haven't seen ([the science](#the-science)).
+- **Your agent is the tutor.** It grades a real explanation in conversation against a reference
+  model and names the exact piece you missed — no multiple choice. Grading runs in the
+  subscription you already have, at zero API cost.
+- **One skill, one growing library.** Feed it papers, videos, and podcasts over time; it keeps
+  the load-bearing ideas from each and remembers them all. One command reviews across everything
+  that's due — nothing to manage, just consume and review.
+- **Targeting over volume.** The hard part isn't generating questions, it's deciding what's worth
+  keeping. Every source is triaged into **core** (durable), **gist** (situational), or **log** (a
+  searchable one-line trace). Keeping nothing from something is a normal outcome.
 - **Files are the API.** Everything is plain markdown ([FORMAT.md](FORMAT.md)) in a folder you
-  choose. Drop it in your Obsidian/Logseq vault and the concepts become native notes (graph,
-  backlinks, phone); don't have a vault, and it's just a folder. No database, no account, no
-  silo. Your sync (iCloud, Dropbox, Obsidian Sync, git) is the sync.
-- **One writer, no review debt.** The `/whetstone` skill is the only thing that writes state.
-  Sessions are capped (15 min / 8 concepts). Nothing you've learned is ever deleted for
-  *succeeding* — durable concepts are maintained at long intervals; you archive things
-  deliberately when they stop mattering. Backlogs get triaged, never guilted over.
-- **Model-agnostic.** The skill is a markdown instruction file; any capable agent (Claude Code,
-  Cowork, Codex, Cursor…) runs it over the same files. Quality scales with the model you bring.
+  choose. Drop it in Obsidian or Logseq and the concepts become native notes — graph, backlinks,
+  phone; skip the vault and it's just a folder. No database, no account, no lock-in — your
+  existing sync (iCloud, Dropbox, git) is the sync.
+- **No review debt.** The `/whetstone` skill is the only thing that writes state, capped at
+  fifteen minutes a day. Nothing you've learned is deleted for *succeeding* — durable concepts
+  return at long intervals; you archive the rest deliberately. Backlogs get triaged, never
+  guilted over.
+- **Model-agnostic.** One markdown instruction file; any capable agent — Claude Code, Cursor,
+  Codex, Cowork — runs it over the same files. Quality scales with the model you bring.
 
 ## The pieces
 
@@ -53,7 +54,7 @@ again at spaced intervals, from a fresh angle each time.
 | `decks/` | One markdown file per source you chose to actively learn (core/gist concepts) |
 | `LOG.md` | Append-only trace of everything consumed — the "log" tier; searchable, promotable |
 | `profile.md` | How you tend to misunderstand things (append-only) — steers future questions |
-| `hub/index.html` | Optional **read-only viewer** of your folder. Static page, zero network calls |
+| `hub/index.html` | Optional visual dashboard of your decks — what's sharp, what's due. Static page, no network calls |
 
 ## Install
 
@@ -83,7 +84,7 @@ Set up the Whetstone learning system for me.
      synced spot, since it's what makes phone and hub review work.
    Create whetstone.json, an empty decks/ folder, profile.md, and LOG.md there — never
    overwriting anything that already exists.
-4. Finally: tell me the folder you created, point me to the read-only hub at
+4. Finally: tell me the folder you created, point me to the hub at
    https://smdesai27.github.io/whetstone/, and show me how to add my first source with
    /whetstone <link or file>.
 
@@ -106,7 +107,7 @@ Or copy `SKILL.md` into your agent's skills directory by hand (Claude Code:
 Then run `/whetstone` — with no config present it enters Setup mode and walks you through the
 same questions.
 
-Either way, once you're set up: open the read-only hub at
+Either way, once you're set up: open the hub at
 **https://smdesai27.github.io/whetstone/** in Chrome/Edge/Brave and point it at your folder — no
 download, no account. Want to see it populated first? Point it at this repo's `sample/` folder.
 
@@ -119,8 +120,8 @@ download, no account. Want to see it populated first? Point it at this repo's `s
 - **Review** → run `/whetstone` with no argument. It writes a fresh question for each due
   concept, grades your explanation, tells you exactly what you missed, and reschedules. **All
   learning happens here, in the skill.**
-- **Glance anywhere** → open the hub (or your PKM, or the files on your phone) to *see* what's
-  sharp, what's due, and your log. The hub is a viewer — it never grades and never writes.
+- **Glance anywhere** → open the hub (or your files on your phone) to see your whole library —
+  every source, what's sharp, what's due. Reviewing itself always happens in the skill.
 - **Movies / shows / novels** → `/whetstone reflect on <title>` — a structured reflection
   conversation instead of a quiz (retention isn't the goal there; thinking is).
 
