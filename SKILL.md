@@ -51,12 +51,12 @@ Goal: a synced folder plus its four state files, created deterministically, in u
    - `decks/` → empty directory (one deck file per source is added at ingest).
    - `profile.md` → a `# Learner Profile` title and a `## Misconception patterns` heading (empty).
    - `LOG.md` → a `# Whetstone — Consumption Log` title and the one-line format reminder.
-3. **Introduce the read-only hub** in plain words:
+3. **Introduce the hub** in plain words:
    > "Your visual companion is **https://smdesai27.github.io/whetstone/** — bookmark it. It's a
-   > **read-only viewer**: it shows what's sharp, what's due, and your log on any device, but it
-   > never changes anything and never grades. All reviewing happens by running /whetstone. It
-   > runs entirely in your browser; your files never leave your computer. Use Chrome, Edge, or
-   > Brave (or open `hub/index.html` locally), then point it at the folder above."
+   > dashboard over your folder: every source you've kept, what's sharp, what's due, on any
+   > device. It never changes anything and never grades — all reviewing happens by running
+   > /whetstone. It runs entirely in your browser; your files never leave your computer. Use
+   > Chrome, Edge, or Brave (or open `hub/index.html` locally), then point it at the folder above."
 4. **Hand off.** Confirm what was created and where, then: "Add your first source with
    `/whetstone <link or file>`, or run `/whetstone` once you have due items."
 

@@ -4,7 +4,7 @@ Whetstone is two things, installed once:
 
 1. **The skill** (`SKILL.md`) — a markdown instruction file you drop into your agent. This is the
    only thing that writes state or calls a model.
-2. **The hub** (`hub/index.html`) — an optional, read-only web viewer of your folder. Nothing to
+2. **The hub** (`hub/index.html`) — an optional web dashboard of your folder. Nothing to
    install; you just open a URL and point it at your folder.
 
 Everything your learning produces is plain markdown in **one folder you choose**. Pick a folder
@@ -43,7 +43,7 @@ Set up the Whetstone learning system for me.
      synced spot, since it's what makes phone and hub review work.
    Create whetstone.json, an empty decks/ folder, profile.md, and LOG.md there — never
    overwriting anything that already exists.
-4. Finally: tell me the folder you created, point me to the read-only hub at
+4. Finally: tell me the folder you created, point me to the hub at
    https://smdesai27.github.io/whetstone/, and show me how to add my first source with
    /whetstone <link or file>.
 
@@ -138,10 +138,10 @@ Set `"sync"` in `whetstone.json` to whichever you chose — it's just an informa
 
 ---
 
-## Step 3 — Open the read-only hub (optional)
+## Step 3 — Open the hub (optional)
 
-The hub shows what's sharp, what's due, your log, and your profile — on any device. It **never
-writes, never grades, and makes zero network calls.** Reviewing always happens by running
+The hub shows your whole library — every source, what's sharp, what's due — on any device. It
+never writes, never grades, and makes zero network calls; reviewing always happens by running
 `/whetstone` in your agent.
 
 1. Open **https://smdesai27.github.io/whetstone/** in **Chrome, Edge, or Brave** on desktop.
