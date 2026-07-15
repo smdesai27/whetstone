@@ -53,11 +53,30 @@ again at spaced intervals, from a fresh angle each time.
 
 ## Install
 
-1. Copy `SKILL.md` into your agent's skills directory (e.g. `~/.claude/skills/whetstone/SKILL.md`).
-2. Run `/whetstone` — first-run setup asks where your folder should live (somewhere that syncs
-   to your devices) and creates everything.
-3. For the visual view, open the hosted hub (this repo's GitHub Pages URL) in Chrome/Edge/Brave
-   and point it at your folder — no download, no account. Or open `hub/index.html` locally.
+**One line — Claude Code on macOS/Linux/WSL:**
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/smdesai27/whetstone/main/install.sh | sh
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://raw.githubusercontent.com/smdesai27/whetstone/main/install.ps1 | iex
+```
+
+**Or by hand:** copy `SKILL.md` into your agent's skills directory — Claude Code:
+`~/.claude/skills/whetstone/SKILL.md` (run `install.sh --print-paths` for every other agent).
+
+Then:
+1. Run `/whetstone` — first-run setup asks where your folder should live (somewhere that syncs to
+   your devices) and creates `whetstone.json`, `decks/`, `profile.md`, and `LOG.md`.
+2. For the visual view, open the hub at **https://smdesai27.github.io/whetstone/** in
+   Chrome/Edge/Brave and point it at your folder — no download, no account. Or open
+   `hub/index.html` locally. Want to see it populated first? Point it at this repo's `sample/`
+   folder.
+
+**Every agent, PKM, OS, and sync combination is covered in [INSTALL.md](INSTALL.md).**
 
 ## Daily loop
 

@@ -17,7 +17,7 @@
   }
   * { box-sizing:border-box; margin:0; }
   html, body { height:100%; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); font-size:14px; line-height:1.5; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); font-size:14px; line-height:1.5; overflow-x:hidden; overflow-wrap:break-word; }
   .serif { font-family:'Hiragino Mincho ProN','Yu Mincho',Georgia,serif; }
   .label { font-size:11px; color:var(--muted); letter-spacing:2px; }
   button { font-family:inherit; font-size:13px; border-radius:2px; padding:9px 20px; cursor:pointer; letter-spacing:1px; border:1px solid var(--line); background:transparent; color:var(--ink); }
@@ -32,7 +32,7 @@
   .nav { margin:0 10px; padding:9px 12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; border-left:2px solid transparent; gap:8px; }
   .nav:hover { background:var(--bg); }
   .nav.on { background:var(--bg); border-left-color:var(--accent); }
-  .nav .n { font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .nav .n { font-size:13px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; flex:1; }
   .nav.hasdue .n { color:var(--ink); }
   .nav .c { font-size:11px; color:var(--muted); white-space:nowrap; }
   .nav .c.due { color:var(--accent); }
@@ -40,7 +40,7 @@
   .foot { margin-top:auto; padding:14px 20px 0; border-top:1px solid var(--line); font-size:11px; color:var(--muted); }
   .foot .gear { cursor:pointer; margin-top:8px; display:inline-block; }
   .foot .gear:hover { color:var(--ink); }
-  .main { flex:1; padding:44px 48px; display:flex; flex-direction:column; max-width:780px; }
+  .main { flex:1; padding:44px 48px; display:flex; flex-direction:column; max-width:780px; min-width:0; }
   .stat b { display:block; font-family:Georgia,serif; font-size:24px; font-weight:400; }
   .stat span { font-size:11px; color:var(--muted); letter-spacing:1px; }
   .callout { border:1px solid var(--line); border-left:2px solid var(--accent); background:var(--card); border-radius:2px; padding:14px 16px; margin-top:34px; font-size:13px; line-height:1.6; }
@@ -73,6 +73,24 @@
   .hidden { display:none !important; }
   .err { color:var(--accent); font-size:13px; margin-top:10px; }
   .hint { font-size:12px; color:var(--muted); }
+  /* wrap long content inside its own container; never force a body h-scroll */
+  .c-title, .c-model, .c-meta, .c-probes, .logline, .l-why, .callout, pre.plain, .duerow > span, #deck-title, #deck-sub { overflow-wrap:anywhere; }
+  .sec-h { flex-wrap:wrap; gap:6px 12px; }
+  .duerow { flex-wrap:wrap; }
+  .duerow > span { min-width:0; }
+  .set-row { flex-wrap:wrap; }
+  /* keyboard focus visibility for the read-only nav */
+  :focus-visible { outline:2px solid var(--accent); outline-offset:2px; border-radius:2px; }
+  [role="button"] { -webkit-tap-highlight-color:transparent; }
+  /* mobile: stack the sidebar above the content, full width, no fixed column */
+  @media (max-width:640px){
+    .app { flex-direction:column; min-height:auto; }
+    .side { width:auto; border-right:none; border-bottom:1px solid var(--line); padding:16px 0 8px; }
+    .side .brand { padding:0 18px 12px; }
+    .foot { margin-top:12px; padding:12px 18px 0; }
+    .main { padding:24px 18px 40px; max-width:none; }
+    .hero { padding:24px 18px; }
+  }
 </style>
 </head>
 <body>
@@ -89,17 +107,17 @@
   <div class="side">
     <div class="brand serif">Whetstone</div>
     <div class="nav-h label">OVERVIEW</div>
-    <div class="nav" id="nav-today" onclick="setScope(-1)">
+    <div class="nav" id="nav-today" role="button" tabindex="0" onclick="setScope(-1)">
       <span class="n" style="color:var(--ink)">Due today</span><span class="pill" id="side-due">0</span>
     </div>
     <div class="nav-h label">DECKS</div>
     <div id="side-decks"></div>
     <div class="nav-h label">FOLDER</div>
-    <div class="nav" id="nav-log" onclick="setScope('log')"><span class="n">Consumption log</span><span class="c" id="side-log">0</span></div>
-    <div class="nav" id="nav-profile" onclick="setScope('profile')"><span class="n">Learner profile</span></div>
+    <div class="nav" id="nav-log" role="button" tabindex="0" onclick="setScope('log')"><span class="n">Consumption log</span><span class="c" id="side-log">0</span></div>
+    <div class="nav" id="nav-profile" role="button" tabindex="0" onclick="setScope('profile')"><span class="n">Learner profile</span></div>
     <div class="foot">
       <div id="foot-stats">–</div>
-      <span class="gear" onclick="setScope('settings')">Settings</span>
+      <span class="gear" role="button" tabindex="0" onclick="setScope('settings')">Settings</span>
     </div>
   </div>
 
@@ -150,7 +168,7 @@
 
     <!-- SETTINGS -->
     <div id="pane-settings" class="hidden">
-      <div class="sec-h"><span class="serif" style="font-size:20px">Settings</span><span class="hint" style="cursor:pointer" onclick="setScope(-1)">← back</span></div>
+      <div class="sec-h"><span class="serif" style="font-size:20px">Settings</span><span class="hint" style="cursor:pointer" role="button" tabindex="0" onclick="setScope(-1)">← back</span></div>
       <div class="label" style="padding:20px 0 6px">APPEARANCE</div>
       <div class="set-row"><span>Theme</span><span class="seg" id="seg-theme"></span></div>
       <div class="label" style="padding:20px 0 6px">FOLDER</div>
@@ -189,6 +207,8 @@ function applyTheme(){
   document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
 }
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+// keyboard activation (Enter/Space) for the read-only nav's role=button elements
+document.addEventListener('keydown', e=>{ if((e.key==='Enter'||e.key===' ') && e.target && e.target.getAttribute && e.target.getAttribute('role')==='button'){ e.preventDefault(); e.target.click(); } });
 
 // --- folder handle persistence (read-only) ---
 function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('whetstone',1); r.onupgradeneeded=()=>r.result.createObjectStore('kv'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
@@ -246,10 +266,13 @@ async function loadFolder(){
   decks=[];
   try {
     try { decksDir = await rootDir.getDirectoryHandle('decks'); } catch(e){ decksDir = rootDir; }
+    const KNOWN=['tier','model','stage','due','status','probes','anchor','history','weak-on'];
     for await (const [name,h] of decksDir.entries()){
       if (h.kind!=='file' || !name.endsWith('.md') || SKIP.includes(name)) continue;
       const raw = await (await h.getFile()).text();
-      const items = parseConcepts(raw);
+      // Only keep sections that look like whetstone concepts (>=1 known field), so a
+      // stray README/notes .md dropped in the folder never renders as junk concepts.
+      const items = parseConcepts(raw).filter(it=>KNOWN.some(k=>k in it.fields));
       if (!items.length) continue;
       const tm = raw.match(/^title:\s*"?(.+?)"?\s*$/m);
       decks.push({ name, slug:name.replace(/\.md$/,''), title: tm?tm[1]:name.replace(/\.md$/,''), items });
@@ -298,7 +321,7 @@ function renderSide(){
     const nd=dueOf(d).length;
     const div=document.createElement('div');
     div.className='nav'+(scope===i?' on':'')+(nd?' hasdue':'');
-    div.onclick=()=>setScope(i);
+    div.onclick=()=>setScope(i); div.tabIndex=0; div.setAttribute('role','button');
     div.innerHTML='<span class="n">'+esc(d.title)+'</span><span class="c'+(nd?' due':'')+'">'+(nd?nd+' due':'0 due')+'</span>';
     el.appendChild(div);
   });
@@ -323,6 +346,7 @@ function renderHome(){
   const el=$('due-list'); el.innerHTML='';
   rows.forEach(r=>{
     const div=document.createElement('div'); div.className='duerow'; div.onclick=()=>setScope(r.deckIdx);
+    div.tabIndex=0; div.setAttribute('role','button');
     div.innerHTML='<span>'+esc(r.it.title||r.it.id)+'</span><span class="d-deck">'+esc(r.deckTitle)+'</span>';
     el.appendChild(div);
   });
@@ -335,8 +359,9 @@ function renderDeck(i){
   const el=$('deck-concepts'); el.innerHTML='';
   d.items.forEach(it=>{
     const cls=classify(it);
+    const tierClass = (it.tier==='core'||it.tier==='gist') ? ' '+it.tier : '';
     const badges=[];
-    badges.push('<span class="badge '+it.tier+'">'+it.tier+'</span>');
+    badges.push('<span class="badge'+tierClass+'">'+esc(it.tier)+'</span>');
     badges.push('<span class="badge">stage '+it.stage+'/'+(IVALS.length-1)+'</span>');
     if (cls==='due') badges.push('<span class="badge due">due</span>');
     else if (cls==='sharp') badges.push('<span class="badge sharp">sharp</span>');
@@ -385,7 +410,7 @@ function seg(el, opts, get, set){
   opts.forEach(o=>{
     const s=document.createElement('span'); s.textContent=o.label;
     if (get()===o.v) s.className='on';
-    s.onclick=()=>set(o.v);
+    s.onclick=()=>set(o.v); s.tabIndex=0; s.setAttribute('role','button');
     host.appendChild(s);
   });
 }

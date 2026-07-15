@@ -1,0 +1,6 @@
+{
+  "version": "0.2",
+  "created": "2026-07-12",
+  "sync": "none (sample data — point the hub here to see a populated view)",
+  "session": { "minutes": 15, "max_concepts": 8 }
+}
