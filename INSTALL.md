@@ -18,6 +18,40 @@ whenever you want the visual view.
 
 ## Step 1 — Install the skill
 
+### Recommended — paste this to your agent
+
+You already have an AI agent; let it install *and* set up Whetstone. Paste this to Claude Code,
+Cursor, Codex, Windsurf, or any capable agent — it does Step 1 and Step 2 for you, asking the
+right questions for your machine:
+
+````text
+Set up the Whetstone learning system for me.
+
+1. Fetch these two files from GitHub:
+   • https://raw.githubusercontent.com/smdesai27/whetstone/main/SKILL.md
+   • https://raw.githubusercontent.com/smdesai27/whetstone/main/FORMAT.md
+2. Install the skill so I can invoke it as /whetstone. For Claude Code that's
+   ~/.claude/skills/whetstone/SKILL.md (create the folder); keep FORMAT.md beside it. For a
+   different agent, put SKILL.md wherever your rules/commands/skills load from — ask me if you
+   are unsure. (If you have a shell, you may instead run:
+   curl -fsSL https://raw.githubusercontent.com/smdesai27/whetstone/main/install.sh | sh)
+3. Then run Whetstone's first-run Setup mode exactly as SKILL.md describes. Ask me, one question
+   at a time and waiting for each answer:
+   - whether I keep a PKM / vault (Obsidian, Logseq, …) and where inside it the whetstone folder
+     should live — otherwise default to ~/Whetstone/;
+   - what syncs that location (iCloud, Dropbox, Obsidian Sync, git, or nothing) — recommend a
+     synced spot, since it's what makes phone and hub review work.
+   Create whetstone.json, an empty decks/ folder, profile.md, and LOG.md there — never
+   overwriting anything that already exists.
+4. Finally: tell me the folder you created, point me to the read-only hub at
+   https://smdesai27.github.io/whetstone/, and show me how to add my first source with
+   /whetstone <link or file>.
+
+Confirm each step as you go.
+````
+
+Prefer to do it by hand? The rest of this page covers every path.
+
 ### Fastest (Claude Code, macOS / Linux / WSL)
 
 ```sh
