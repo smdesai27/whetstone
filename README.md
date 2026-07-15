@@ -3,6 +3,10 @@
 **Remember what you read, watch, and listen to — well enough to explain it months later.** Your
 AI agent becomes the tutor; your memory lives in plain markdown files you own. It's not AI Anki.
 
+<p align="center">
+  <img src="assets/whetstone-demo.gif" alt="Whetstone demo: feed your AI agent a lecture, it extracts the ideas that matter and quizzes you on them, grades your explanation, then reviews everything you've consumed on a spaced schedule — all from one skill, over plain markdown files." width="100%">
+</p>
+
 Watch a video, read a paper, listen to a podcast → tell your agent `/whetstone <link>` → it
 pulls out the few ideas worth keeping, quizzes you immediately, and brings each one back on an
 expanding schedule — **rephrasing the question every time** so you rehearse *understanding*, not
