@@ -40,29 +40,31 @@
   .foot { margin-top:auto; padding:14px 20px 0; border-top:1px solid var(--line); font-size:11px; color:var(--muted); }
   .foot .gear { cursor:pointer; margin-top:8px; display:inline-block; }
   .foot .gear:hover { color:var(--ink); }
-  .main { flex:1; padding:44px 48px; display:flex; flex-direction:column; max-width:760px; }
+  .main { flex:1; padding:44px 48px; display:flex; flex-direction:column; max-width:780px; }
   .stat b { display:block; font-family:Georgia,serif; font-size:24px; font-weight:400; }
   .stat span { font-size:11px; color:var(--muted); letter-spacing:1px; }
-  .qcard { margin-top:8px; }
-  .qtop { display:flex; justify-content:space-between; }
-  .strokes { display:flex; gap:5px; margin-top:10px; }
-  .strokes span { width:22px; height:2px; background:var(--line); }
-  .strokes span.done { background:var(--accent); }
-  .prompt { font-size:18px; margin-top:26px; line-height:1.6; white-space:pre-wrap; }
-  textarea { width:100%; min-height:96px; background:var(--input); border:1px solid var(--line); border-radius:2px; margin-top:22px; padding:12px 14px; font:inherit; font-size:13px; color:var(--ink); resize:vertical; }
-  textarea::placeholder { color:var(--muted); }
-  .opt { display:block; width:100%; text-align:left; border:1px solid var(--line); border-radius:2px; padding:11px 14px; margin-top:8px; font-size:13px; color:var(--ink); background:transparent; letter-spacing:0; }
-  .opt:hover { border-color:var(--muted); }
-  .opt.right { border-color:var(--pass); background:var(--pass-bg); }
-  .opt.wrong { border-color:var(--accent); }
-  .result { border-left:2px solid var(--pass); background:var(--input); margin-top:18px; padding:12px 16px; }
-  .result.fail { border-left-color:var(--accent); }
-  .result.partial { border-left-color:var(--partial); }
-  .result .r-label { font-size:11px; letter-spacing:2px; }
-  .result .r-body { font-size:13px; margin-top:6px; line-height:1.6; }
-  .answer { background:var(--input); border:1px solid var(--line); border-radius:2px; margin-top:18px; padding:12px 16px; font-size:13px; line-height:1.6; }
-  .answer .label { display:block; margin-bottom:4px; }
-  .row { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; align-items:center; }
+  .callout { border:1px solid var(--line); border-left:2px solid var(--accent); background:var(--card); border-radius:2px; padding:14px 16px; margin-top:34px; font-size:13px; line-height:1.6; }
+  .callout code { background:var(--input); border:1px solid var(--line); border-radius:3px; padding:1px 6px; font-size:12px; }
+  .sec-h { display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--line); padding-bottom:12px; margin-top:8px; }
+  .concept { border:1px solid var(--line); background:var(--card); border-radius:2px; padding:16px 18px; margin-top:14px; }
+  .concept .c-title { font-size:16px; line-height:1.4; }
+  .badges { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; }
+  .badge { font-size:10px; letter-spacing:1px; text-transform:uppercase; border:1px solid var(--line); border-radius:2px; padding:2px 7px; color:var(--muted); }
+  .badge.core { color:var(--accent); border-color:var(--accent); }
+  .badge.gist { color:var(--partial); border-color:var(--partial); }
+  .badge.due { color:var(--accent-fg); background:var(--accent); border:none; }
+  .badge.sharp { color:var(--pass); border-color:var(--pass); }
+  .badge.archived { color:var(--muted); }
+  .c-model { font-size:13px; line-height:1.65; margin-top:12px; }
+  .c-meta { font-size:12px; color:var(--muted); margin-top:10px; line-height:1.6; }
+  .c-meta b { color:var(--ink); font-weight:500; }
+  .c-probes { font-size:11px; color:var(--muted); margin-top:8px; font-family:ui-monospace,Menlo,monospace; }
+  .duerow { display:flex; justify-content:space-between; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); font-size:13px; cursor:pointer; }
+  .duerow:hover { color:var(--accent); }
+  .duerow .d-deck { font-size:11px; color:var(--muted); }
+  .logline { padding:9px 0; border-bottom:1px solid var(--line); font-size:13px; line-height:1.5; }
+  .logline .l-why { color:var(--muted); font-size:12px; }
+  pre.plain { white-space:pre-wrap; font-family:inherit; font-size:13px; line-height:1.7; margin-top:16px; }
   .set-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; gap:12px; }
   .seg { display:inline-flex; border:1px solid var(--line); border-radius:2px; overflow:hidden; }
   .seg span { padding:6px 14px; font-size:12px; color:var(--muted); cursor:pointer; }
@@ -71,17 +73,14 @@
   .hidden { display:none !important; }
   .err { color:var(--accent); font-size:13px; margin-top:10px; }
   .hint { font-size:12px; color:var(--muted); }
-  ul.done-list { list-style:none; margin-top:14px; }
-  ul.done-list li { font-size:13px; padding:4px 0; color:var(--muted); }
-  ul.done-list li b { font-weight:500; letter-spacing:1px; }
-  .g-pass { color:var(--pass); } .g-partial { color:var(--partial); } .g-fail { color:var(--accent); } .g-queued { color:var(--muted); }
 </style>
 </head>
 <body>
 
 <div id="view-pick" class="hero">
   <div class="serif" style="font-size:26px;letter-spacing:3px">Whetstone</div>
-  <p class="hint" style="max-width:380px;margin:14px 0 24px">Point this page at your whetstone folder. Everything runs in your browser — your files never leave your computer.</p>
+  <p class="hint" style="max-width:400px;margin:14px 0 6px">A read-only view of your whetstone folder — what's sharp, what's due, your log. It never changes anything and never grades; reviewing happens by running <code>/whetstone</code> in your agent.</p>
+  <p class="hint" style="max-width:400px;margin:0 0 24px">Everything runs in your browser — your files never leave your computer.</p>
   <button class="primary" id="btn-pick">Open whetstone folder</button>
   <div class="err" id="pick-err"></div>
 </div>
@@ -89,86 +88,84 @@
 <div id="view-app" class="app hidden">
   <div class="side">
     <div class="brand serif">Whetstone</div>
-    <div class="nav-h label">TODAY</div>
+    <div class="nav-h label">OVERVIEW</div>
     <div class="nav" id="nav-today" onclick="setScope(-1)">
-      <span class="n" style="color:var(--ink)">Due</span><span class="pill" id="side-due">0</span>
+      <span class="n" style="color:var(--ink)">Due today</span><span class="pill" id="side-due">0</span>
     </div>
     <div class="nav-h label">DECKS</div>
     <div id="side-decks"></div>
+    <div class="nav-h label">FOLDER</div>
+    <div class="nav" id="nav-log" onclick="setScope('log')"><span class="n">Consumption log</span><span class="c" id="side-log">0</span></div>
+    <div class="nav" id="nav-profile" onclick="setScope('profile')"><span class="n">Learner profile</span></div>
     <div class="foot">
       <div id="foot-stats">–</div>
-      <span class="gear" onclick="showSettings()">Settings</span>
+      <span class="gear" onclick="setScope('settings')">Settings</span>
     </div>
   </div>
 
   <div class="main">
+    <!-- HOME / OVERVIEW -->
     <div id="pane-home">
       <div class="label" id="home-date"></div>
       <div class="serif" style="font-size:26px;margin-top:10px" id="home-title"></div>
       <div class="hint" id="home-sub" style="margin-top:6px"></div>
-      <div style="display:flex;gap:28px;margin-top:26px">
+      <div style="display:flex;gap:28px;margin-top:26px;flex-wrap:wrap">
         <div class="stat"><b style="color:var(--accent)" id="st-due">0</b><span>due</span></div>
         <div class="stat"><b id="st-active">0</b><span>active</span></div>
-        <div class="stat"><b id="st-retired">0</b><span>mastered</span></div>
-        <div class="stat"><b id="st-queued">0</b><span>awaiting grading</span></div>
+        <div class="stat"><b id="st-sharp">0</b><span>sharp</span></div>
+        <div class="stat"><b id="st-logged">0</b><span>logged</span></div>
+        <div class="stat"><b id="st-archived">0</b><span>archived</span></div>
       </div>
-      <div class="row" style="margin-top:40px">
-        <button class="primary" id="btn-begin">Begin</button>
-        <span class="hint" id="begin-hint">15 min session</span>
+      <div class="callout">
+        This page is a viewer. To review what's due, run <code>/whetstone</code> in your agent —
+        it writes a fresh question for each concept, grades your explanation, and reschedules.
       </div>
-      <div class="hint" style="margin-top:26px">Add material: tell your agent “/whetstone &lt;link&gt;”. Queued answers are graded free on your next /whetstone.</div>
+      <div style="margin-top:30px">
+        <div class="label" id="due-h">DUE TODAY</div>
+        <div id="due-list" style="margin-top:8px"></div>
+      </div>
       <div class="err" id="home-err"></div>
     </div>
 
-    <div id="pane-session" class="hidden">
-      <div class="qtop"><span class="label" id="q-meta"></span><span class="label" id="q-timer" style="color:var(--accent)"></span></div>
-      <div class="strokes" id="q-strokes"></div>
-      <div class="qcard">
-        <div class="prompt serif" id="q-prompt"></div>
-        <div id="q-input"></div>
-        <div id="q-result"></div>
-        <div class="row" id="q-actions"></div>
+    <!-- DECK -->
+    <div id="pane-deck" class="hidden">
+      <div class="sec-h">
+        <span class="serif" style="font-size:20px" id="deck-title"></span>
+        <span class="hint" id="deck-sub"></span>
       </div>
+      <div id="deck-concepts"></div>
     </div>
 
-    <div id="pane-done" class="hidden">
-      <div class="label">SESSION COMPLETE</div>
-      <div class="serif" style="font-size:24px;margin-top:10px" id="done-score"></div>
-      <ul class="done-list" id="done-list"></ul>
-      <div class="hint" id="save-status" style="margin-top:14px"></div>
-      <div class="row" style="margin-top:26px"><button class="ink" onclick="goHome()">Back</button></div>
+    <!-- LOG -->
+    <div id="pane-log" class="hidden">
+      <div class="sec-h"><span class="serif" style="font-size:20px">Consumption log</span><span class="hint">append-only · read-only</span></div>
+      <div id="log-body"></div>
     </div>
 
+    <!-- PROFILE -->
+    <div id="pane-profile" class="hidden">
+      <div class="sec-h"><span class="serif" style="font-size:20px">Learner profile</span><span class="hint">how you tend to misunderstand</span></div>
+      <pre class="plain" id="profile-body"></pre>
+    </div>
+
+    <!-- SETTINGS -->
     <div id="pane-settings" class="hidden">
-      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px">
-        <span class="serif" style="font-size:19px">Settings</span>
-        <span class="hint" style="cursor:pointer" onclick="goHome()">← back</span>
-      </div>
+      <div class="sec-h"><span class="serif" style="font-size:20px">Settings</span><span class="hint" style="cursor:pointer" onclick="setScope(-1)">← back</span></div>
       <div class="label" style="padding:20px 0 6px">APPEARANCE</div>
       <div class="set-row"><span>Theme</span><span class="seg" id="seg-theme"></span></div>
       <div class="label" style="padding:20px 0 6px">FOLDER</div>
       <div class="set-row">
         <div style="min-width:0">
           <div id="set-folder" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">–</div>
-          <div class="hint" id="set-folder-sub" style="color:var(--pass)"></div>
+          <div class="hint" id="set-folder-sub"></div>
         </div>
         <button onclick="changeFolder()" style="white-space:nowrap">Change folder</button>
       </div>
-      <div class="label" style="padding:20px 0 6px">SESSION</div>
-      <div class="set-row"><span>Length</span><span class="seg" id="seg-len"></span></div>
-      <div class="set-row"><span>Max items</span><span class="seg" id="seg-max"></span></div>
+      <div class="label" style="padding:20px 0 6px">SESSION (set in whetstone.json)</div>
+      <div class="set-row"><span>Length / max concepts</span><span class="hint" id="set-session">–</span></div>
+      <div class="label" style="padding:20px 0 6px">ACCESS</div>
       <div class="set-row">
-        <div><div>Include items not yet due</div><div class="hint">Practice ahead of schedule; results still update the ladder</div></div>
-        <span class="seg" id="seg-notdue"></span>
-      </div>
-      <div class="label" style="padding:20px 0 6px">GRADING</div>
-      <div class="set-row">
-        <div><div>Teach-back answers</div><div class="hint">Queued answers are graded free by your agent on next /whetstone</div></div>
-        <span class="seg" id="seg-grading"></span>
-      </div>
-      <div class="label" style="padding:20px 0 6px">RESET</div>
-      <div class="set-row">
-        <div><div>Forget folder access</div><div class="hint">Revokes this page’s permission; your files are untouched</div></div>
+        <div><div>Forget folder access</div><div class="hint">Revokes this page's read permission; your files are untouched</div></div>
         <button class="danger" onclick="forgetFolder()">Forget</button>
       </div>
     </div>
@@ -176,24 +173,24 @@
 </div>
 
 <script>
-const IVALS = [1,3,7,16,35];
-const DEFAULTS = { theme:'system', len:15, max:8, notdue:false, grading:'queue' };
-let cfg = Object.assign({}, DEFAULTS, JSON.parse(localStorage.getItem('whetstone-cfg')||'{}'));
-let rootDir=null, decksDir=null, decks=[], scope=-1, queue=[], qi=0, results=[], timerId=null, secs=0, pendingCount=0;
+const IVALS = [1,3,7,16,35,90,180,365];
+const SHARP_STAGE = 5;                 // stage >= this (>= 90-day interval) reads as "sharp"
+let cfg = { theme: (localStorage.getItem('whetstone-theme')||'system') };
+let rootDir=null, decksDir=null, decks=[], scope=-1;
+let logLines=[], profileText='', sessionText='15 min · 8 concepts';
 
 const $ = id => document.getElementById(id);
 const today = () => { const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
-const addDays = (iso,n) => { const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()+n); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); };
 const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const fmtDate = d => d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
 
-function saveCfg(){ localStorage.setItem('whetstone-cfg', JSON.stringify(cfg)); }
 function applyTheme(){
   const dark = cfg.theme==='dark' || (cfg.theme==='system' && matchMedia('(prefers-color-scheme: dark)').matches);
   document.body.setAttribute('data-theme', dark ? 'dark' : 'light');
 }
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
 
+// --- folder handle persistence (read-only) ---
 function idb(){ return new Promise((res,rej)=>{ const r=indexedDB.open('whetstone',1); r.onupgradeneeded=()=>r.result.createObjectStore('kv'); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); }); }
 async function idbGet(k){ const db=await idb(); return new Promise(res=>{ const t=db.transaction('kv').objectStore('kv').get(k); t.onsuccess=()=>res(t.result); t.onerror=()=>res(null); }); }
 async function idbSet(k,v){ const db=await idb(); return new Promise(res=>{ const t=db.transaction('kv','readwrite').objectStore('kv').put(v,k); t.onsuccess=()=>res(); t.onerror=()=>res(); }); }
@@ -203,78 +200,99 @@ async function restore(){
   applyTheme();
   if (!window.showDirectoryPicker){ $('pick-err').textContent='This browser lacks folder access — use Chrome, Edge, or Brave on desktop.'; $('btn-pick').disabled=true; return; }
   const h = await idbGet('root');
-  if (h){ try { if (await h.queryPermission({mode:'readwrite'})==='granted' || await h.requestPermission({mode:'readwrite'})==='granted'){ rootDir=h; enterApp(); } } catch(e){} }
+  if (h){ try { if (await h.queryPermission({mode:'read'})==='granted' || await h.requestPermission({mode:'read'})==='granted'){ rootDir=h; enterApp(); } } catch(e){} }
 }
 $('btn-pick').onclick = async () => {
-  try { rootDir = await showDirectoryPicker({mode:'readwrite'}); await idbSet('root', rootDir); enterApp(); }
+  try { rootDir = await showDirectoryPicker({mode:'read'}); await idbSet('root', rootDir); enterApp(); }
   catch(e){ if (e.name!=='AbortError') $('pick-err').textContent = e.message; }
 };
 async function changeFolder(){
-  try { rootDir = await showDirectoryPicker({mode:'readwrite'}); await idbSet('root', rootDir); await loadFolder(); goHome(); } catch(e){}
+  try { rootDir = await showDirectoryPicker({mode:'read'}); await idbSet('root', rootDir); await loadFolder(); setScope(-1); } catch(e){}
 }
-async function forgetFolder(){ await idbDel('root'); localStorage.removeItem('whetstone-cfg'); location.reload(); }
+async function forgetFolder(){ await idbDel('root'); location.reload(); }
 
 async function readFileIn(dir,name){ try { const fh=await dir.getFileHandle(name); return await (await fh.getFile()).text(); } catch(e){ return null; } }
-async function writeFileIn(dir,name,text){ const fh=await dir.getFileHandle(name,{create:true}); const w=await fh.createWritable(); await w.write(text); await w.close(); }
 
-function parseItems(body){
+// --- parse concepts (tolerant; preserves unknown fields; never writes) ---
+function parseConcepts(body){
   const parts=(body||'').split(/^### /m), items=[];
   for (let i=1;i<parts.length;i++){
-    const lines=parts[i].split('\n'), id=lines[0].trim();
-    const get=k=>{ const l=lines.find(x=>x.trim().startsWith('- '+k+':')); return l ? l.trim().slice(k.length+3).trim() : ''; };
-    items.push({ id, prompt:get('prompt'), answer:get('answer'), stage:parseInt(get('stage'))||0, due:get('due'), history:get('history'), status:get('status')||'active' });
+    const lines=parts[i].split('\n');
+    const head=lines[0].trim();
+    const hm=head.match(/^(\S+)\s+([\s\S]*)$/);
+    const id=hm?hm[1]:head, title=hm?hm[2].trim():'';
+    const fields={};
+    for (const l of lines.slice(1)){
+      const fm=l.match(/^\s*-\s+([A-Za-z0-9_-]+):\s?(.*)$/);
+      if (fm) fields[fm[1].toLowerCase()]=fm[2].trim();
+    }
+    items.push({
+      id, title, fields,
+      tier:(fields.tier||'core').toLowerCase(),
+      stage:parseInt(fields.stage)||0,
+      due:fields.due||'',
+      status:(fields.status||'active').toLowerCase()
+    });
   }
   return items;
-}
-function buildDeck(raw, items){
-  const head = raw.split(/^### /m)[0].replace(/\s+$/,'');
-  return head+'\n\n'+items.map(it=>'### '+it.id+'\n- prompt: '+it.prompt+'\n- answer: '+it.answer+'\n- stage: '+it.stage+'\n- due: '+it.due+'\n- history: '+it.history+'\n- status: '+it.status).join('\n\n')+'\n';
 }
 
 async function enterApp(){
   $('view-pick').classList.add('hidden'); $('view-app').classList.remove('hidden');
-  await loadFolder(); goHome();
+  await loadFolder(); setScope(-1);
 }
 async function loadFolder(){
-  const SKIP=['PENDING.md','pending.md','profile.md','README.md','FORMAT.md','SKILL.md','TRACK.md'];
+  const SKIP=['PENDING.md','pending.md','profile.md','README.md','FORMAT.md','SKILL.md','LOG.md','log.md','TRACK.md'];
   decks=[];
   try {
     try { decksDir = await rootDir.getDirectoryHandle('decks'); } catch(e){ decksDir = rootDir; }
     for await (const [name,h] of decksDir.entries()){
       if (h.kind!=='file' || !name.endsWith('.md') || SKIP.includes(name)) continue;
       const raw = await (await h.getFile()).text();
-      const items = parseItems(raw);
+      const items = parseConcepts(raw);
       if (!items.length) continue;
       const tm = raw.match(/^title:\s*"?(.+?)"?\s*$/m);
-      decks.push({ name, slug:name.replace(/\.md$/,''), title: tm?tm[1]:name.replace(/\.md$/,''), raw, items, dirty:false });
+      decks.push({ name, slug:name.replace(/\.md$/,''), title: tm?tm[1]:name.replace(/\.md$/,''), items });
     }
-    const pending = await readFileIn(rootDir,'PENDING.md') || await readFileIn(rootDir,'pending.md') || '';
-    pendingCount = (pending.match(/^> answer:\s*\S/gm)||[]).length + (pending.match(/^- \[x\]/gmi)||[]).length;
+    decks.sort((a,b)=> a.title.localeCompare(b.title));
+    // log
+    const log = await readFileIn(rootDir,'LOG.md') || await readFileIn(rootDir,'log.md') || '';
+    logLines = log.split('\n').filter(l=>/^\s*-\s+\d{4}-\d\d-\d\d/.test(l));
+    // profile
+    profileText = (await readFileIn(rootDir,'profile.md') || 'No profile.md found.').trim();
+    // config (for display only)
+    try {
+      const c = JSON.parse(await readFileIn(rootDir,'whetstone.json') || '{}');
+      if (c.session) sessionText = (c.session.minutes||15)+' min · '+(c.session.max_concepts||8)+' concepts';
+    } catch(e){}
     $('home-err').textContent='';
   } catch(e){ $('home-err').textContent='Could not read folder: '+e.message; }
 }
 
-function dueOf(d){ const t=today(); return d.items.filter(it=>it.status==='active' && it.due && it.due<=t); }
-function poolFor(scopeIdx){
-  const t=today(), pool=[];
-  decks.forEach((d,i)=>{ if (scopeIdx>=0 && i!==scopeIdx) return;
-    d.items.forEach(it=>{ if (it.status!=='active') return; if (cfg.notdue || (it.due && it.due<=t)) pool.push({deck:d,item:it}); });
-  });
-  pool.sort((a,b)=>(a.item.due||'9999')<(b.item.due||'9999')?-1:1);
-  return pool;
+// --- derived state ---
+function isDue(it){ return it.status==='active' && it.due && it.due<=today(); }
+function dueOf(d){ return d.items.filter(isDue); }
+function classify(it){ if (it.status==='archived') return 'archived'; if (isDue(it)) return 'due'; if (it.stage>=SHARP_STAGE) return 'sharp'; return 'learning'; }
+
+// --- navigation ---
+function setScope(s){
+  scope=s;
+  ['pane-home','pane-deck','pane-log','pane-profile','pane-settings'].forEach(p=>$(p).classList.add('hidden'));
+  renderSide();
+  if (s==='log'){ $('pane-log').classList.remove('hidden'); renderLog(); }
+  else if (s==='profile'){ $('pane-profile').classList.remove('hidden'); renderProfile(); }
+  else if (s==='settings'){ $('pane-settings').classList.remove('hidden'); renderSettings(); }
+  else if (typeof s==='number' && s>=0){ $('pane-deck').classList.remove('hidden'); renderDeck(s); }
+  else { $('pane-home').classList.remove('hidden'); renderHome(); }
 }
 
-function setScope(i){ scope=i; goHome(); }
-function goHome(){
-  ['pane-session','pane-done','pane-settings'].forEach(p=>$(p).classList.add('hidden'));
-  $('pane-home').classList.remove('hidden');
-  renderSide(); renderHome();
-}
 function renderSide(){
-  const t=today(); let allDue=0;
-  decks.forEach(d=>allDue+=dueOf(d).length);
+  let allDue=0; decks.forEach(d=>allDue+=dueOf(d).length);
   $('side-due').textContent=allDue;
+  $('side-log').textContent=logLines.length;
   $('nav-today').classList.toggle('on', scope===-1);
+  $('nav-log').classList.toggle('on', scope==='log');
+  $('nav-profile').classList.toggle('on', scope==='profile');
   const el=$('side-decks'); el.innerHTML='';
   decks.forEach((d,i)=>{
     const nd=dueOf(d).length;
@@ -285,138 +303,91 @@ function renderSide(){
     el.appendChild(div);
   });
   if (!decks.length) el.innerHTML='<div class="nav"><span class="n">No decks yet</span></div>';
-  let active=0, retired=0, streakNote='';
-  decks.forEach(d=>d.items.forEach(it=>it.status==='retired'?retired++:active++));
-  $('foot-stats').textContent = active+' active · '+retired+' mastered';
-}
-function renderHome(){
-  const scoped = scope>=0 ? [decks[scope]] : decks;
-  let due=0, active=0, retired=0;
-  scoped.forEach(d=>d.items.forEach(it=>{ if(it.status==='retired')retired++; else { active++; if(it.due&&it.due<=today())due++; } }));
-  $('home-date').textContent = fmtDate(new Date());
-  $('home-title').textContent = scope>=0 ? decks[scope].title : (due+' due today');
-  $('home-sub').textContent = scope>=0 ? (due+' due today') : '';
-  $('st-due').textContent=due; $('st-active').textContent=active; $('st-retired').textContent=retired; $('st-queued').textContent=pendingCount;
-  const pool = poolFor(scope);
-  $('btn-begin').disabled = pool.length===0;
-  $('begin-hint').textContent = pool.length ? cfg.len+' min session · '+Math.min(pool.length,cfg.max)+' items' : 'Nothing due' + (cfg.notdue?'':' — enable “include not yet due” in settings to practice ahead');
-}
-$('btn-begin').onclick = () => {
-  queue = poolFor(scope).slice(0, cfg.max); qi=0; results=[]; secs=cfg.len*60;
-  $('pane-home').classList.add('hidden'); $('pane-session').classList.remove('hidden');
-  clearInterval(timerId); timerId=setInterval(tick,1000); showQ();
-};
-function tick(){
-  secs--; $('q-timer').textContent = Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
-  if (secs<=0){ clearInterval(timerId); finish(true); }
-}
-const isMCQ = p => /\(a\)/.test(p) && /\(b\)/.test(p);
-function showQ(){
-  if (qi>=queue.length) return finish(false);
-  const {deck,item}=queue[qi];
-  $('q-meta').textContent = deck.title.toUpperCase()+' · '+(qi+1)+' OF '+queue.length;
-  $('q-timer').textContent = Math.floor(secs/60)+':'+String(secs%60).padStart(2,'0');
-  $('q-strokes').innerHTML = queue.map((_,i)=>'<span class="'+(i<qi?'done':'')+'"></span>').join('');
-  $('q-result').innerHTML=''; $('q-actions').innerHTML='';
-  if (isMCQ(item.prompt)){
-    $('q-prompt').textContent = item.prompt.split(/\(a\)/)[0].replace(/^MCQ\s*[—-]\s*/,'').trim();
-    $('q-input').innerHTML='';
-    item.prompt.split(/(?=\([a-d]\)\s)/).slice(1).forEach(o=>{
-      const letter=o.match(/^\(([a-d])\)/)[1];
-      const b=document.createElement('button'); b.className='opt'; b.textContent=o.trim();
-      b.onclick=()=>gradeMCQ(letter,b);
-      $('q-input').appendChild(b);
-    });
-  } else {
-    $('q-prompt').textContent = item.prompt;
-    $('q-input').innerHTML='<textarea id="ans" placeholder="Answer from memory"></textarea>';
-    if (cfg.grading==='queue') addBtn('Queue for grading','ink',deferAnswer);
-    addBtn('Reveal and self-grade','quiet',reveal);
-  }
-}
-function addBtn(label,cls,fn){ const b=document.createElement('button'); b.className=cls; b.textContent=label; b.onclick=fn; $('q-actions').appendChild(b); return b; }
-function gradeMCQ(letter,btn){
-  const {item}=queue[qi]; const right=(item.answer.match(/\(([a-d])\)/)||[])[1];
-  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-  const ok = letter===right;
-  btn.classList.add(ok?'right':'wrong');
-  if (!ok) document.querySelectorAll('.opt').forEach(b=>{ if (b.textContent.startsWith('('+right+')')) b.classList.add('right'); });
-  record(ok?'pass':'fail', item.answer);
-}
-async function deferAnswer(){
-  const {deck,item}=queue[qi]; const ans=($('ans')?$('ans').value:'').trim();
-  if (!ans){ reveal(); return; }
-  let pending = await readFileIn(rootDir,'PENDING.md') || '# Whetstone — Pending Worksheet\n';
-  pending += '\n## H. ['+deck.slug+' / '+item.id+'] teach-back (hub, '+today()+')\n'+item.prompt+'\n\n> answer: '+ans.replace(/\n/g,'\n> ')+'\n';
-  await writeFileIn(rootDir,'PENDING.md',pending);
-  pendingCount++;
-  results.push({id:item.id, prompt:item.prompt, grade:'queued'});
-  const div=document.createElement('div'); div.className='result';
-  div.innerHTML='<div class="r-label" style="color:var(--muted)">QUEUED</div><div class="r-body">Graded free on your next /whetstone.</div>';
-  $('q-result').innerHTML=''; $('q-result').appendChild(div);
-  $('q-actions').innerHTML=''; addBtn(qi+1<queue.length?'Next':'Finish','primary',()=>{qi++;showQ();});
-}
-function reveal(){
-  const {item}=queue[qi];
-  const div=document.createElement('div'); div.className='answer';
-  div.innerHTML='<span class="label">EXPECTED ANSWER</span>'+esc(item.answer);
-  $('q-result').innerHTML=''; $('q-result').appendChild(div);
-  $('q-actions').innerHTML='';
-  addBtn('Pass','',()=>record('pass','self-graded')).style.color='var(--pass)';
-  addBtn('Partial','',()=>record('partial','self-graded')).style.color='var(--partial)';
-  addBtn('Fail','',()=>record('fail','self-graded')).style.color='var(--accent)';
-}
-function record(grade, detail){
-  const q=queue[qi], it=q.item, t=today();
-  if (grade==='pass'){ if (it.stage>=4) it.status='retired'; else it.stage++; }
-  else if (grade==='fail') it.stage=Math.max(0,it.stage-1);
-  it.due=addDays(t,IVALS[Math.min(it.stage,4)]);
-  it.history=(it.history?it.history+', ':'')+t+' '+grade+' (hub)';
-  q.deck.dirty=true;
-  results.push({id:it.id, prompt:it.prompt, grade});
-  const div=document.createElement('div'); div.className='result '+grade;
-  const lbl = grade.toUpperCase()+(it.status==='retired'?' · MASTERED — RETIRED':' · NEXT REVIEW '+it.due);
-  div.innerHTML='<div class="r-label g-'+grade+'">'+lbl+'</div><div class="r-body">'+esc(detail)+'</div>';
-  $('q-result').appendChild(div);
-  $('q-actions').innerHTML='';
-  addBtn(qi+1<queue.length?'Next':'Finish','primary',()=>{qi++;showQ();});
-}
-async function finish(timedOut){
-  clearInterval(timerId);
-  $('pane-session').classList.add('hidden'); $('pane-done').classList.remove('hidden');
-  const c={pass:0,partial:0,fail:0,queued:0}; results.forEach(r=>c[r.grade]++);
-  $('done-score').textContent=(timedOut?'Time — ':'')+c.pass+' pass · '+c.partial+' partial · '+c.fail+' fail'+(c.queued?' · '+c.queued+' queued':'');
-  $('done-list').innerHTML=results.map(r=>'<li><b class="g-'+r.grade+'">'+r.grade+'</b> — '+esc(r.prompt.slice(0,80))+'…</li>').join('');
-  $('save-status').textContent='Saving…';
-  try {
-    for (const d of decks){ if (!d.dirty) continue; await writeFileIn(decksDir, d.name, buildDeck(d.raw, d.items)); d.raw=buildDeck(d.raw,d.items); d.dirty=false; }
-    $('save-status').textContent='Saved to your files.'+(c.queued?' Queued answers await /whetstone.':'');
-  } catch(e){ $('save-status').textContent='Save failed: '+e.message; }
-  renderSide();
+  let active=0, sharp=0, archived=0;
+  decks.forEach(d=>d.items.forEach(it=>{ const c=classify(it); if(c==='archived')archived++; else { active++; if(c==='sharp')sharp++; } }));
+  $('foot-stats').textContent = active+' active · '+sharp+' sharp';
 }
 
+function renderHome(){
+  let due=0, active=0, sharp=0, archived=0;
+  decks.forEach(d=>d.items.forEach(it=>{ const c=classify(it); if(c==='archived'){archived++;return;} active++; if(c==='due')due++; if(c==='sharp')sharp++; }));
+  $('home-date').textContent = fmtDate(new Date());
+  $('home-title').textContent = due ? (due+' due today') : 'Nothing due today';
+  $('home-sub').textContent = due ? 'Run /whetstone to review them.' : 'Ingest something new, or come back when items ripen.';
+  $('st-due').textContent=due; $('st-active').textContent=active; $('st-sharp').textContent=sharp;
+  $('st-logged').textContent=logLines.length; $('st-archived').textContent=archived;
+  const rows=[];
+  decks.forEach((d,i)=>dueOf(d).forEach(it=>rows.push({deckIdx:i, deckTitle:d.title, it})));
+  rows.sort((a,b)=>(a.it.due||'9999')<(b.it.due||'9999')?-1:1);
+  $('due-h').textContent = rows.length ? 'DUE TODAY' : '';
+  const el=$('due-list'); el.innerHTML='';
+  rows.forEach(r=>{
+    const div=document.createElement('div'); div.className='duerow'; div.onclick=()=>setScope(r.deckIdx);
+    div.innerHTML='<span>'+esc(r.it.title||r.it.id)+'</span><span class="d-deck">'+esc(r.deckTitle)+'</span>';
+    el.appendChild(div);
+  });
+}
+
+function renderDeck(i){
+  const d=decks[i]; const nd=dueOf(d).length;
+  $('deck-title').textContent=d.title;
+  $('deck-sub').textContent=d.items.length+' concepts · '+(nd?nd+' due':'none due');
+  const el=$('deck-concepts'); el.innerHTML='';
+  d.items.forEach(it=>{
+    const cls=classify(it);
+    const badges=[];
+    badges.push('<span class="badge '+it.tier+'">'+it.tier+'</span>');
+    badges.push('<span class="badge">stage '+it.stage+'/'+(IVALS.length-1)+'</span>');
+    if (cls==='due') badges.push('<span class="badge due">due</span>');
+    else if (cls==='sharp') badges.push('<span class="badge sharp">sharp</span>');
+    else if (cls==='archived') badges.push('<span class="badge archived">archived</span>');
+    if (it.due && cls!=='due' && cls!=='archived') badges.push('<span class="badge">next '+esc(it.due)+'</span>');
+    const c=document.createElement('div'); c.className='concept';
+    let html='<div class="c-title serif">'+esc(it.title||it.id)+'</div>';
+    html+='<div class="badges">'+badges.join('')+'</div>';
+    if (it.fields.model) html+='<div class="c-model">'+esc(it.fields.model)+'</div>';
+    const meta=[];
+    if (it.fields['weak-on']) meta.push('<b>weak on:</b> '+esc(it.fields['weak-on']));
+    if (it.fields.history) meta.push('<b>history:</b> '+esc(it.fields.history));
+    if (it.fields.anchor) meta.push('<b>anchor:</b> '+esc(it.fields.anchor));
+    if (meta.length) html+='<div class="c-meta">'+meta.join('<br>')+'</div>';
+    if (it.fields.probes) html+='<div class="c-probes">'+esc(it.fields.probes)+'</div>';
+    c.innerHTML=html;
+    el.appendChild(c);
+  });
+}
+
+function renderLog(){
+  const el=$('log-body'); el.innerHTML='';
+  if (!logLines.length){ el.innerHTML='<p class="hint" style="margin-top:16px">Nothing logged yet.</p>'; return; }
+  logLines.slice().reverse().forEach(line=>{
+    const clean=line.replace(/^\s*-\s+/,'');
+    const div=document.createElement('div'); div.className='logline';
+    const parts=clean.split(' · ');
+    let html='<span>'+esc(parts[0])+'</span>';
+    const rest=parts.slice(1).map(esc).join(' · ');
+    if (rest) html+='<div class="l-why">'+rest+'</div>';
+    div.innerHTML=html;
+    el.appendChild(div);
+  });
+}
+
+function renderProfile(){ $('profile-body').textContent = profileText; }
+
+function renderSettings(){
+  seg('seg-theme', [{v:'light',label:'Light'},{v:'dark',label:'Dark'},{v:'system',label:'System'}], ()=>cfg.theme, v=>{ cfg.theme=v; localStorage.setItem('whetstone-theme',v); applyTheme(); renderSettings(); });
+  $('set-folder').textContent = rootDir ? rootDir.name : '–';
+  $('set-folder-sub').textContent = 'Read-only access';
+  $('set-session').textContent = sessionText;
+}
 function seg(el, opts, get, set){
   const host=$(el); host.innerHTML='';
   opts.forEach(o=>{
     const s=document.createElement('span'); s.textContent=o.label;
-    s.className = get()===o.value ? 'on' : '';
-    s.onclick=()=>{ set(o.value); saveCfg(); applyTheme(); renderSettings(); renderHome(); };
+    if (get()===o.v) s.className='on';
+    s.onclick=()=>set(o.v);
     host.appendChild(s);
   });
-}
-function showSettings(){
-  ['pane-home','pane-session','pane-done'].forEach(p=>$(p).classList.add('hidden'));
-  $('pane-settings').classList.remove('hidden');
-  renderSettings();
-}
-function renderSettings(){
-  seg('seg-theme',[{label:'System',value:'system'},{label:'Light',value:'light'},{label:'Dark',value:'dark'}],()=>cfg.theme,v=>cfg.theme=v);
-  seg('seg-len',[{label:'10 min',value:10},{label:'15 min',value:15},{label:'20 min',value:20}],()=>cfg.len,v=>cfg.len=v);
-  seg('seg-max',[{label:'5',value:5},{label:'8',value:8},{label:'12',value:12}],()=>cfg.max,v=>cfg.max=v);
-  seg('seg-notdue',[{label:'Off',value:false},{label:'On',value:true}],()=>cfg.notdue,v=>cfg.notdue=v);
-  seg('seg-grading',[{label:'Queue',value:'queue'},{label:'Self-grade',value:'self'}],()=>cfg.grading,v=>cfg.grading=v);
-  $('set-folder').textContent = rootDir ? rootDir.name : '–';
-  $('set-folder-sub').textContent = rootDir ? 'connected · '+decks.length+' deck'+(decks.length===1?'':'s')+' · read & write' : '';
 }
 
 restore();

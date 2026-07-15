@@ -1,6 +1,6 @@
 {
-  "grading": "deferred",
-  "sync": "icloud",
+  "version": "0.2",
   "created": "2026-07-12",
-  "version": "0.1"
+  "sync": "icloud",
+  "session": { "minutes": 15, "max_concepts": 8 }
 }
