@@ -1,6 +1,6 @@
 ---
 name: whetstone
-version: 0.3.0
+version: 0.3.1
 description: >
   Spaced-retrieval understanding system over plain markdown. Use when the user invokes
   /whetstone, asks to be quizzed on media they consumed (paper, video, podcast, article),
@@ -136,8 +136,8 @@ Updates the skill itself. The data folder is never touched.
 1. **Locate the installed copy** — the SKILL.md this skill was loaded from (Claude Code
    default: `~/.claude/skills/whetstone/SKILL.md`; other agents per their skills path). If that
    path is inside a plugin/marketplace-managed directory (e.g. `~/.claude/plugins/…`), don't
-   edit it — tell the user to run `claude plugin update whetstone` and restart (or enable
-   auto-update under `/plugin` → Marketplaces), and stop.
+   edit it — tell the user to run `claude plugin update whetstone@whetstone` and restart (or
+   enable auto-update under `/plugin` → Marketplaces), and stop.
 2. **Fetch** `https://raw.githubusercontent.com/smdesai27/whetstone/main/SKILL.md` and compare
    its frontmatter `version` against the installed one.
    - Not newer → "already current (v<X>)". Stop.

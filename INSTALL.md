@@ -77,11 +77,11 @@ This repo is its own plugin marketplace:
 /plugin install whetstone@whetstone
 ```
 
-Installed this way, new releases arrive via `claude plugin update whetstone` (restart to
-apply) — or automatically, if you enable auto-update for the marketplace under `/plugin` →
-**Marketplaces** (off by default for third-party marketplaces). Note that Claude Code
-namespaces plugin skills, so it may list as `/whetstone:whetstone`; both forms reach the same
-skill.
+Installed this way, new releases arrive via `claude plugin update whetstone@whetstone`
+(restart to apply) — or automatically, if you enable auto-update for the marketplace under
+`/plugin` → **Marketplaces** (off by default for third-party marketplaces). Note that Claude
+Code namespaces plugin skills, so it lists as `/whetstone:whetstone` — typing `/whetstone`
+finds it.
 
 ### By hand, per agent
 
@@ -182,7 +182,7 @@ folder is never touched, and a newer skill always reads older-format files.
 | How you installed | How you update |
 |---|---|
 | Installer script, agent prompt, or by hand | Run `/whetstone update` — it fetches the latest `SKILL.md` from this repo, compares versions, backs up your copy, and replaces it. Re-running the install one-liner is equivalent. |
-| Claude Code plugin | `claude plugin update whetstone` (restart to apply), or enable auto-update under `/plugin` → Marketplaces |
+| Claude Code plugin | `claude plugin update whetstone@whetstone` (restart to apply), or enable auto-update under `/plugin` → Marketplaces |
 
 By default Whetstone never checks for updates on its own — no phoning home. To opt in to a
 rate-limited check (at most once every 14 days, during a review session), set

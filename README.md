@@ -126,8 +126,8 @@ folder and are never touched.
 - **Installed by copy** (installer, agent prompt, or by hand): run `/whetstone update` — the
   skill compares its version against this repo, backs up your current copy, and replaces
   itself. Re-running the install one-liner does the same thing.
-- **Installed as a plugin**: run `claude plugin update whetstone` and restart, or enable
-  auto-update for the marketplace under `/plugin` → Marketplaces.
+- **Installed as a plugin**: run `claude plugin update whetstone@whetstone` and restart, or
+  enable auto-update for the marketplace under `/plugin` → Marketplaces.
 - Whetstone never phones home: no update check runs unless you ask, or you opt in to a
   rate-limited one with `"updates": { "check": true }` in `whetstone.json`.
 

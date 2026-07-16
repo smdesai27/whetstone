@@ -1,6 +1,6 @@
 {
   "name": "whetstone",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "private": true,
   "description": "Agent-native spaced-retrieval understanding system over plain markdown. This package.json exists only to run the hub's stress-test harness — Whetstone itself has zero runtime dependencies.",
   "license": "MIT",

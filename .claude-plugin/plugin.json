@@ -1,6 +1,6 @@
 {
   "name": "whetstone",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Spaced-retrieval understanding system over plain markdown — /whetstone ingests what you consume, quizzes you with a fresh question each time, and reviews it all on an expanding schedule.",
   "author": {
     "name": "Sanil Desai",
